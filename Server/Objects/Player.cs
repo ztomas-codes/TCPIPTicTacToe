@@ -1,3 +1,5 @@
+using System.Net.Sockets;
+
 namespace Server.Objects
 {
     public class Player
@@ -7,7 +9,10 @@ namespace Server.Objects
         public string IP { get; private set; }
         public int Port { get; private set; }
         public  char Char { get; set; }
-        
+        public bool Win {get; set;}
+        public bool Turn { get; set; }
+        public TcpClient Client { get; set; }
+
         public Player(string name, int score, string ip, int port)
         {
             Name = name;
