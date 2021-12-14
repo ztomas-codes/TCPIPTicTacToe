@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Net.Sockets;
 
 namespace Server.Objects
@@ -12,6 +13,7 @@ namespace Server.Objects
         public bool Win {get; set;}
         public bool Turn { get; set; }
         public TcpClient Client { get; set; }
+        public  static List<Player> Players = new List<Player>();
 
         public Player(string name, int score, string ip, int port)
         {
@@ -19,6 +21,7 @@ namespace Server.Objects
             Score = score;
             IP = ip;
             Port = port;
+            Players.Add(this);
         }
 
         

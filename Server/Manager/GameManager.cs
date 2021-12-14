@@ -58,7 +58,7 @@ namespace Server.Manager
                    }
                     SortPackets(bytes);
                    int move = RemoveAllCharFromInt(mess);
-                   CheckIfFree();
+                   CheckIfFree(5);
                   
                    
                 }
@@ -81,13 +81,12 @@ namespace Server.Manager
             {
                 if (!packetString.StartsWith(_packet))
                 {
-                    byte[] error = Encoding.ASCII.GetBytes($"{PacketManager.DISCONNECT}|Disconnecte because of wrong packet");
+                    byte[] error = Encoding.ASCII.GetBytes($"{PacketManager.DISCONNECT}|Disconnected because of wrong packet");
                     Stream.Write(error , 0 , error.Length);
                     Stream.Flush();
                     Stream.Dispose();
                 }
             }
-            
         }
         private void InsertIntoBoard(int move, char charToInsert)
         {
@@ -207,13 +206,6 @@ namespace Server.Manager
             string result = Regex.Replace(str, @"[^\d]", "");
             return int.Parse(result);
         }
-        
-        
-        
-        
-        
-            
-            
     }
 
   

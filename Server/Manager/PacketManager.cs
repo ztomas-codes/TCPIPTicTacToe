@@ -9,7 +9,7 @@ namespace Server.Manager
         public static readonly string TURN = "TURN";
         public static readonly string PLAYERTURN = "PLT";
         public static readonly string NOTYOURTURN = "NYT";
-        public static readonly string DISCONNECT = "DISCONNECT";
+        public static readonly string DISCONNECT = "DIS";
         public static readonly string WRONGMOVE = "WRGM";
         public static readonly string STARTGAME = "STRG";
 
