@@ -6,8 +6,9 @@ namespace TicTacToe
     class Program
     {
         static void Main(string[] args)
-        {
-            new PlayerClient("127.0.0.1", 100);
+        { 
+            PlayerClient pc = new PlayerClient("127.0.0.1", 100);
+            pc.thread.Start();
         }
     }
 }

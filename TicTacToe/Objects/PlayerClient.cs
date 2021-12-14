@@ -10,9 +10,6 @@ namespace Client
 {
     public class PlayerClient
     {
-        public string Name;
-        public string IP;
-
         public TcpClient tcpclient;
         public NetworkStream stream;
         public Thread thread;
@@ -25,28 +22,18 @@ namespace Client
             {
                 tcpclient = new TcpClient(server, port);
                 stream = tcpclient.GetStream();
-
                 thread = new Thread(Listener);
-                thread.Start();
             }
         }
 
         public void Listener()
         {
+            PacketManager pm = new PacketManager();
             while (true)
             {
-            }
-        }
-
-        public void RenderGame(string Map)
-        {
-            int i = 0;
-            foreach (var character in Map.Split(" "))
-            {
-                Console.Write($"{character}\t");
-                if (i == 3) Console.Write("\n");
-                i++;
-                if (i == 4) i = 0;
+                byte[] bytes = new byte[100];
+                stream.Read(bytes, 0, bytes.Length);
+                pm.Run(Packets.GetPacket(bytes));
             }
         }
     }
