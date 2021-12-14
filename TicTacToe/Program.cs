@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Client;
+using System;
 
 namespace TicTacToe
 {
@@ -6,7 +7,7 @@ namespace TicTacToe
     {
         static void Main(string[] args)
         {
-            Console.WriteLine("Hello World!");
+            new PlayerClient("127.0.0.1", 100);
         }
     }
 }
