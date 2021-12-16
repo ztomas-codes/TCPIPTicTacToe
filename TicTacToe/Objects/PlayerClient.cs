@@ -21,8 +21,10 @@ namespace Client
             if (Instance == null)
             {
                 tcpclient = new TcpClient(server, port);
+                
                 stream = tcpclient.GetStream();
                 thread = new Thread(Listener);
+                Console.WriteLine("client connected");
             }
         }
 
@@ -30,7 +32,7 @@ namespace Client
         {
             PacketManager pm = new PacketManager();
             while (true)
-            {
+            { 
                 byte[] bytes = new byte[100];
                 stream.Read(bytes, 0, bytes.Length);
                 pm.Run(Packets.GetPacket(bytes));
