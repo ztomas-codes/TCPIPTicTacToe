@@ -20,6 +20,7 @@ namespace Client
         {
             if (Instance == null)
             {
+                Instance = this;
                 //tcpclient = new TcpClient(server, port);
                 
                 //stream = tcpclient.GetStream();

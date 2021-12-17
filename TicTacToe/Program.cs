@@ -7,9 +7,9 @@ namespace TicTacToe
     {
         static void Main(string[] args)
         {
-            PacketManager pm = new PacketManager();
-            PlayerClient pc = new PlayerClient("127.0.0.1", 8888);
-            //pc._task.Start();
+            new PacketManager();
+            new PlayerClient("127.0.0.1", 8888);
+            //PlayerClient.Instance._task.Start();
         }
     }
 }
