@@ -14,7 +14,8 @@ namespace Server
     class Program
     {
         public static List<TcpClient> Client { get; private set; }
-        private static NetworkStream _stream { get; set; }
+        private static NetworkStream _streamPlayer1 { get; set; }
+        private static NetworkStream _streamPlayer2 { get; set; }
         private static Task _Task { get; set; }
 
         static void Main(string[] args)
@@ -33,7 +34,14 @@ namespace Server
                     client = server.AcceptTcpClient();
                     Client.Add(client);
                     Console.WriteLine($" {client.Client.RemoteEndPoint} >>" + "connected");
-                    _stream = client.GetStream();
+                    if (_streamPlayer1 == null)
+                    {
+                        _streamPlayer1 = client.GetStream();
+                    }
+                    else
+                    {
+                        _streamPlayer2 = client.GetStream();
+                    }
                     _Task = Task.Run(async ()
                         =>
                     {
@@ -41,16 +49,9 @@ namespace Server
                         {
                             var paket = Encoding.Default.GetBytes("Waiting for players");
                             await Task.Delay(10000);
-                            if (_stream.CanWrite)
-                            {
+                            
                                 Console.WriteLine("sent packet");
-                                _stream.Write(paket, 0, paket.Length);
-
-                            }
-                            else
-                            {
-                                return;
-                            }
+                                _streamPlayer1.Write(paket, 0, paket.Length);
                         }
                     });
                 }

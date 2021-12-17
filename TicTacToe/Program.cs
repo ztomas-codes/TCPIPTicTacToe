@@ -8,7 +8,7 @@ namespace TicTacToe
         static void Main(string[] args)
         { 
             PlayerClient pc = new PlayerClient("127.0.0.1", 8888);
-            pc.thread.Start();
+            pc._task.Start();
         }
     }
 }

@@ -12,7 +12,7 @@ namespace Client
     {
         public TcpClient tcpclient;
         public NetworkStream stream;
-        public Thread thread;
+        public Task _task;
 
         public static PlayerClient Instance = null;
 
@@ -23,7 +23,7 @@ namespace Client
                 tcpclient = new TcpClient(server, port);
                 
                 stream = tcpclient.GetStream();
-                thread = new Thread(Listener);
+                _task = Task.Run(() => Listener());
                 Console.WriteLine("client connected");
             }
         }
