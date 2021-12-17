@@ -20,45 +20,52 @@ namespace Server
         static void Main(string[] args)
         {
             Client = new List<TcpClient>();
-            
+
             TcpListener server = new TcpListener(8888);
             TcpClient client = default(TcpClient);
             int counter = 0;
-            while (Client.Count != 2)
+            while (true)
             {
-                server.Start();
-                Console.WriteLine(" >>" + "Server started");
-                client = server.AcceptTcpClient();
-                Client.Add(client);
-                Console.WriteLine($" {client.Client.RemoteEndPoint} >>" + "connected");
-                _stream = client.GetStream();
-                _Task = Task.Run(async ()
-                    =>
+                while (Client.Count <= 1)
                 {
-                    while (Client.Count <= 1)
+                    server.Start();
+                    Console.WriteLine(" >>" + "Server started");
+                    client = server.AcceptTcpClient();
+                    Client.Add(client);
+                    Console.WriteLine($" {client.Client.RemoteEndPoint} >>" + "connected");
+                    _stream = client.GetStream();
+                    _Task = Task.Run(async ()
+                        =>
                     {
-                        var paket = Encoding.Default.GetBytes("Waiting for players");
-                        await Task.Delay(10000);
-                        Console.WriteLine("sent packet");
-                        _stream.Write(paket, 0, paket.Length);
-                    }
-                });
-            }
-            
-            if (Client.Count == 2)
-            {
-                //TODO: Sort Name Packet
-                
-                Player player1 = new Player("player1" , 0 , Client[0].Client.RemoteEndPoint.ToString() , 8888);
-                Player player2 = new Player("player2" , 0 , Client[1].Client.RemoteEndPoint.ToString() , 8888);
-                GameManager gameManager = new GameManager(player1 , player2 , _stream);
-                Client.Clear();
-                gameManager.StartGame();
-                
+                        while (Client.Count == 1)
+                        {
+                            var paket = Encoding.Default.GetBytes("Waiting for players");
+                            await Task.Delay(10000);
+                            if (_stream.CanWrite)
+                            {
+                                Console.WriteLine("sent packet");
+                                _stream.Write(paket, 0, paket.Length);
+
+                            }
+                            else
+                            {
+                                return;
+                            }
+                        }
+                    });
+                }
+
+                if (Client.Count == 2)
+                {
+                    //TODO: Sort Name Packet
+                    Player player1 = new Player(Client[0].Client.RemoteEndPoint.ToString(), 0, Client[0].Client.RemoteEndPoint.ToString(), 8888);
+                    Player player2 = new Player(Client[1].Client.RemoteEndPoint.ToString(), 0, Client[1].Client.RemoteEndPoint.ToString(), 8888);
+                    GameManager gameManager = new GameManager(player1, player2, _stream);
+                    _Task.Dispose();
+                    Client.Clear();
+                    gameManager.StartGame();
+                }
             }
         }
-
-        
-
-}
+    }
 }
