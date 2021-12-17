@@ -20,17 +20,17 @@ namespace Client
         {
             if (Instance == null)
             {
-                tcpclient = new TcpClient(server, port);
+                //tcpclient = new TcpClient(server, port);
                 
-                stream = tcpclient.GetStream();
-                _task = Task.Run(() => Listener());
+                //stream = tcpclient.GetStream();
+                //_task = Task.Run(() => Listener());
                 Console.WriteLine("client connected");
             }
         }
 
         public void Listener()
         {
-            PacketManager pm = new PacketManager();
+            PacketManager pm = PacketManager.Instance;
             while (true)
             { 
                 byte[] bytes = new byte[100];
