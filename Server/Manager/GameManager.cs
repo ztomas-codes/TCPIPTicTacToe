@@ -109,7 +109,96 @@ namespace Server.Manager
         }
         private string CheckWinner()
         {
-            return _player1.Name;
+            if (board[0, 0] == _player1.Char && board[0, 1] == _player1.Char && board[0, 2] == _player1.Char)
+            {
+                _player1.Score++;
+                return _player1.Name;
+            }
+            else if (board[1, 0] == _player1.Char && board[1, 1] == _player1.Char && board[1, 2] == _player1.Char)
+            {
+                _player1.Score++;
+                return _player1.Name;
+            }
+            else if (board[2, 0] == _player1.Char && board[2, 1] == _player1.Char && board[2, 2] == _player1.Char)
+            {
+                _player1.Score++;
+                return _player1.Name;
+            }
+            else if (board[0, 0] == _player1.Char && board[1, 0] == _player1.Char && board[2, 0] == _player1.Char)
+            {
+                _player1.Score++;
+                return _player1.Name;
+            }
+            else if (board[0, 1] == _player1.Char && board[1, 1] == _player1.Char && board[2, 1] == _player1.Char)
+            {
+                _player1.Score++;
+                return _player1.Name;
+            }
+            else if (board[0, 2] == _player1.Char && board[1, 2] == _player1.Char && board[2, 2] == _player1.Char)
+            {
+                _player1.Score++;
+                return _player1.Name;
+            }
+            else if (board[0, 0] == _player1.Char && board[1, 1] == _player1.Char && board[2, 2] == _player1.Char)
+            {
+                _player1.Score++;
+                return _player1.Name;
+            }
+            else if (board[0, 2] == _player1.Char && board[1, 1] == _player1.Char && board[2, 0] == _player1.Char)
+            {
+                _player1.Score++;
+                return _player1.Name;
+            }
+
+
+            if (board[0, 0] == _player2.Char && board[0, 1] == _player2.Char && board[0, 2] == _player2.Char)
+            {
+                _player2.Score++;
+                return _player2.Name;
+            }
+            else if (board[1, 0] == _player2.Char && board[1, 1] == _player2.Char && board[1, 2] == _player2.Char)
+            {
+                _player2.Score++;
+                return _player2.Name;
+            }
+            else if (board[2, 0] == _player2.Char && board[2, 1] == _player2.Char && board[2, 2] == _player2.Char)
+            {
+                _player2.Score++;
+                return _player2.Name;
+            }
+            else if (board[0, 0] == _player2.Char && board[1, 0] == _player2.Char && board[2, 0] == _player2.Char)
+            {
+                _player2.Score++;
+                return _player2.Name;
+            }
+            else if (board[0, 1] == _player2.Char && board[1, 1] == _player2.Char && board[2, 1] == _player2.Char)
+            {
+                _player2.Score++;
+                return _player2.Name;
+            }
+            else if (board[0, 2] == _player2.Char && board[1, 2] == _player2.Char && board[2, 2] == _player2.Char)
+            {
+                _player2.Score++;
+                return _player2.Name;
+            }
+            else if (board[0, 0] == _player2.Char && board[1, 1] == _player2.Char && board[2, 2] == _player2.Char)
+            {
+                _player2.Score++;
+                return _player2.Name;
+            }
+            else if (board[0, 2] == _player2.Char && board[1, 1] == _player2.Char && board[2, 0] == _player2.Char)
+            {
+                _player2.Score++;
+                return _player2.Name;
+            }
+
+            if (board[0,0] != '1' && board[0,1] != '2' && board[0,2] != '3' && board[1,0] != '4' && board[1,1] != '5' && board[1,2] != '6' && board[2,0] != '7' && board[2,1] != '8' && board[2,2] != '9')
+            {
+                return "Tie";
+               
+            }
+            return null;
+            
         }
         private void SortPackets(byte[] packet , Player pl , Player pl1)
         {
@@ -119,7 +208,7 @@ namespace Server.Manager
                 if(packetString.StartsWith(PacketManager.MOVE) && pl.Turn == true)  
                 {
                     int move = RemoveAllCharFromInt(packetString);
-                    if (CheckIfFree(move, pl))
+                    if (CheckIfFree(move))
                         
                     {
                         
@@ -143,6 +232,7 @@ namespace Server.Manager
                     boardPacket = PacketManager.CreatePacket(BuildBoard());
                     _player1.NetworkStream.Write(boardPacket, 0, boardPacket.Length);
                     _player2.NetworkStream.Write(boardPacket , 0 , boardPacket.Length);
+                    
                     break;
                 case 2:
                     board[0, 1] = charToInsert;
@@ -198,82 +288,172 @@ namespace Server.Manager
                     break;
             }
         }
-        private bool CheckIfFree(int move, Player pl)
+        private bool CheckIfFree(int move)
         {
             byte[] packet = PacketManager.CreatePacket($"{PacketManager.WRONGMOVE}|Wrong move place is already taken");
-            switch (move)
+            if (_player1.Turn == true)
             {
-                case 1:
-                    if (board[0, 0] != '1')
+                switch (move)
+                {
+                    case 1:
+                        if (board[0, 0] != '1')
+                        {
+                            _player1.NetworkStream.Write(packet, 0, packet.Length);
+                            return false;
+                        }
+                        break;
+                    case 2:
+                        if (board[0, 1] != '2')
+                        {
+                            _player1.NetworkStream.Write(packet, 0, packet.Length);
+                            return false;
+                        }
+                        break;
+                    case 3:
+                        if (board[0, 2] != '3')
+                        {
+                            _player1.NetworkStream.Write(packet, 0, packet.Length);
+                            return false;
+                        }
+                        break;
+                    case 4:
+                        if (board[1, 0] != '4')
+                        {
+                            _player1.NetworkStream.Write(packet, 0, packet.Length);
+                            return false;
+                        }
+                        break;
+                    case 5:
+                        if (board[1, 1] != '5')
+                        {
+                            _player1.NetworkStream.Write(packet, 0, packet.Length);
+                            return false;
+                        }
+                        break;
+                    case 6:
+                        if (board[1, 2] != '6')
+                        {
+                            _player1.NetworkStream.Write(packet, 0, packet.Length);
+                            return false;
+                        }
+                        break;
+                    case 7:
+                        if (board[2, 0] != '7')
+                        {
+                            _player1.NetworkStream.Write(packet, 0, packet.Length);
+                            return false;
+                        }
+                        break;
+                    case 8:
+                        if (board[2, 1] != '8')
+                        {
+                            _player1.NetworkStream.Write(packet, 0, packet.Length);
+                            return false;
+                        }
+                        break;
+                    case 9:
+                        if (board[2, 2] != '9')
+                        {
+                            _player1.NetworkStream.Write(packet, 0, packet.Length);
+                            return false;
+                        }
+                        break;
+                    default:
+
+                        byte[] errorMove = PacketManager.CreatePacket($"{PacketManager.WRONGMOVE}|Wrong move");
+                        _player1.NetworkStream.Write(errorMove, 0, errorMove.Length);
+                        return true;
+                }
+            }
+            else
+            {
+                if (_player2.Turn == true)
+                {
+                    switch (move)
                     {
-                        _player1.NetworkStream.Write(packet, 0, packet.Length);
-                        return false;
+                        case 1:
+                            if (board[0, 0] != '1')
+                            {
+                                _player1.NetworkStream.Write(packet, 0, packet.Length);
+                                return false;
+                            }
+                            break;
+                        case 2:
+                            if (board[0, 1] != '2')
+                            {
+                                _player1.NetworkStream.Write(packet, 0, packet.Length);
+                                return false;
+                            }
+                            break;
+                        case 3:
+                            if (board[0, 2] != '3')
+                            {
+                                _player1.NetworkStream.Write(packet, 0, packet.Length);
+                                return false;
+                            }
+                            break;
+                        case 4:
+                            if (board[1, 0] != '4')
+                            {
+                                _player1.NetworkStream.Write(packet, 0, packet.Length);
+                                return false;
+                            }
+                            break;
+                        case 5:
+                            if (board[1, 1] != '5')
+                            {
+                                _player1.NetworkStream.Write(packet, 0, packet.Length);
+                                return false;
+                            }
+                            break;
+                        case 6:
+                            if (board[1, 2] != '6')
+                            {
+                                _player1.NetworkStream.Write(packet, 0, packet.Length);
+                                return false;
+                            }
+                            break;
+                        case 7:
+                            if (board[2, 0] != '7')
+                            {
+                                _player1.NetworkStream.Write(packet, 0, packet.Length);
+                                return false;
+                            }
+                            break;
+                        case 8:
+                            if (board[2, 1] != '8')
+                            {
+                                _player1.NetworkStream.Write(packet, 0, packet.Length);
+                                return false;
+                            }
+                            break;
+                        case 9:
+                            if (board[2, 2] != '9')
+                            {
+                                _player1.NetworkStream.Write(packet, 0, packet.Length);
+                                return false;
+                            }
+                            break;
+                        default:
+
+                            byte[] errorMove = PacketManager.CreatePacket($"{PacketManager.WRONGMOVE}|Wrong move");
+                            _player1.NetworkStream.Write(errorMove, 0, errorMove.Length);
+                            return true;
                     }
-                    break;
-                case 2:
-                    if (board[0, 1] != '2')
-                    {
-                        _player1.NetworkStream.Write(packet, 0, packet.Length);
-                        return false;
-                    }
-                    break;
-                case 3:
-                    if (board[0, 2] != '3')
-                    {
-                        _player1.NetworkStream.Write(packet, 0, packet.Length);
-                        return false;
-                    }
-                    break;
-                case 4:
-                    if (board[1, 0] != '4')
-                    {
-                        _player1.NetworkStream.Write(packet, 0, packet.Length);
-                        return false;
-                    }
-                    break;
-                case 5:
-                    if (board[1, 1] != '5')
-                    {
-                        _player1.NetworkStream.Write(packet, 0, packet.Length);
-                        return false;
-                    }
-                    break;
-                case 6:
-                    if (board[1, 2] != '6')
-                    {
-                        _player1.NetworkStream.Write(packet, 0, packet.Length);
-                        return false;
-                    }
-                    break;
-                case 7:
-                    if (board[2, 0] != '7')
-                    {
-                        _player1.NetworkStream.Write(packet, 0, packet.Length);
-                        return false;
-                    }
-                    break;
-                case 8:
-                    if (board[2, 1] != '8')
-                    {
-                        _player1.NetworkStream.Write(packet, 0, packet.Length);
-                        return false;
-                    }
-                    break;
-                case 9:
-                    if (board[2, 2] != '9')
-                    {
-                        _player1.NetworkStream.Write(packet, 0, packet.Length);
-                        return false;
-                    }
-                    break;
-                default:
-                    
-                    byte[] errorMove = PacketManager.CreatePacket($"{PacketManager.WRONGMOVE}|Wrong move");
-                    _player1.NetworkStream.Write(errorMove, 0, errorMove.Length);
-                    return true;
+                }
             }
 
             return true;
+        }
+        private void Win()
+        {
+            string winner = CheckWinner();
+            if(winner != null)
+            {
+                var packet = PacketManager.CreatePacket($"{PacketManager.WIN} | {winner}");
+                _player1.NetworkStream.Write(packet, 0, packet.Length);
+                _player2.NetworkStream.Write(packet , 0 , packet.Length);
+            }
         }
 
         private int RemoveAllCharFromInt(string str)

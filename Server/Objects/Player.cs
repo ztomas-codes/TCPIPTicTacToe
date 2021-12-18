@@ -6,7 +6,7 @@ namespace Server.Objects
     public class Player
     {
         public string Name { get; private set; }
-        public int Score { get; private set; }
+        public int Score { get; set; }
         public string IP { get; private set; }
         public int Port { get; private set; }
         public  char Char { get; set; }
