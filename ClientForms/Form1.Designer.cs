@@ -40,6 +40,7 @@
             this.metroButton10 = new MetroFramework.Controls.MetroButton();
             this.Log = new System.Windows.Forms.Label();
             this.nameTextBox = new System.Windows.Forms.TextBox();
+            this.port = new System.Windows.Forms.TextBox();
             this.SuspendLayout();
             // 
             // metroButton1
@@ -144,16 +145,24 @@
             // 
             // nameTextBox
             // 
-            this.nameTextBox.Location = new System.Drawing.Point(193, 233);
+            this.nameTextBox.Location = new System.Drawing.Point(152, 225);
             this.nameTextBox.Name = "nameTextBox";
             this.nameTextBox.Size = new System.Drawing.Size(100, 23);
             this.nameTextBox.TabIndex = 22;
+            // 
+            // port
+            // 
+            this.port.Location = new System.Drawing.Point(258, 225);
+            this.port.Name = "port";
+            this.port.Size = new System.Drawing.Size(35, 23);
+            this.port.TabIndex = 23;
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(323, 285);
+            this.Controls.Add(this.port);
             this.Controls.Add(this.nameTextBox);
             this.Controls.Add(this.Log);
             this.Controls.Add(this.metroButton10);
@@ -187,5 +196,6 @@
         private MetroFramework.Controls.MetroButton metroButton9;
         private Label Log;
         private TextBox nameTextBox;
+        private TextBox port;
     }
 }
