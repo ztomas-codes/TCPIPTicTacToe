@@ -1,5 +1,4 @@
-﻿using ClientForms;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Sockets;
@@ -20,7 +19,6 @@ namespace Client
         const string DISCONNECT = "DISCONNECT";
         const string WRONGMOVE = "WRGM";
         const string STARTGAME = "STRG";
-        const string BOARD = "BOARD";
 
         const string NAME = "NAME";
 
@@ -41,25 +39,22 @@ namespace Client
             switch (packetList[0])
             {
                 case WIN:
-                    Win(packet);
+                    Win();
                     break;
                 case TURN:
-                    Turn(packet);
-                    break;
-                case BOARD:
-                    Board(packet);
+                    Turn(packetList[1]);
                     break;
                 case LOSE:
-                    Lose(packet);
+                    Lose();
                     break;
                 case STARTGAME:
-                    StartGame(packet);
+                    StartGame();
                     break;
                 case WRONGMOVE:
-                    WrongMove(packet);
+                    WrongMove();
                     break;
                 case DISCONNECT:
-                    Disconnect(packet);
+                    Disconnect();
                     break;
                 default:
                     break;
@@ -69,56 +64,43 @@ namespace Client
 
 
         //Listeners
-        private void Win(string packet)
+        private void Win()
         {
-            Output.WriteLine("Vyhral jsi");
+            Console.WriteLine("Vyhral jsi");
         }
 
-        private void Lose(string packet)
+        private void Lose()
         {
-            Output.WriteLine("Prohral jsi");
+            Console.WriteLine("Prohral jsi");
         }
 
-        private void WrongMove(string packet)
+        private void WrongMove()
         {
-            Output.WriteLine("Tento tah neni k dispozici");
+            Console.WriteLine("Tento tah neni k dispozici");
+        }
+        
+        private void Turn(string boolean)
+        {
+            if (boolean == "1")
+            Console.WriteLine("Ted jsi na tahu");
+            else
+            Console.WriteLine("Ted nejsi na tahu");
         }
 
-        private void Turn(string packet)
+        private void Disconnect()
         {
-            Output.WriteLine(packet);
+            Console.WriteLine("Byl jsi odpojen");
         }
-
-        private void Disconnect(string packet)
+        private void StartGame()
         {
-            Output.WriteLine("Byl jsi odpojen");
-        }
-        private void StartGame(string packet)
-        {
-            Output.WriteLine("Hra byla odstartovana");
-        }
-
-        private void Board(string packet)
-        {
-            List<string> split = packet.Split('|').ToList();
-            split.RemoveAt(0);
-
-            split.Reverse();
-
-            int i = 0;
-            foreach(var button in Form1.buttons)
-            {
-                button.Text = $"{split[i].Remove(1)}";
-                i++;
-            }
+            Console.WriteLine("Hra byla odstartovana");
         }
 
         //Actions
-        public void SendMove(string pole)
+        public void SendMove(int pole)
         {
             NetworkStream ns = PlayerClient.Instance.tcpclient.GetStream();
             ns.Write(Packets.CreatePacket($"{MOVE}|{pole}"));
-            Console.WriteLine(pole);
         }
 
         public void SendName(string name)
