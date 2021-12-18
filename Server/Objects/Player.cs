@@ -13,6 +13,8 @@ namespace Server.Objects
         public bool Win {get; set;}
         public bool Turn { get; set; }
         public TcpClient Client { get; set; }
+        public NetworkStream NetworkStream { get; set; }
+
         public  static List<Player> Players = new List<Player>();
 
         public Player(string name, int score, string ip, int port)
