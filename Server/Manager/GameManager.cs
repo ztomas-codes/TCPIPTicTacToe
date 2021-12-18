@@ -221,6 +221,10 @@ namespace Server.Manager
            
             if(packetString.StartsWith(PacketManager.MOVE) && pl.Turn == true)  
             {
+                if(packetString.Contains("|X") || packetString.Contains("|O"))
+                {
+                    return;
+                }
                 int move = RemoveAllCharFromInt(packetString.Replace("|" , ""));
                 if (CheckIfFree(move))
                 {
@@ -317,6 +321,7 @@ namespace Server.Manager
         private bool CheckIfFree(int move)
         {
             byte[] packet = PacketManager.CreatePacket($"{PacketManager.WRONGMOVE}|Wrong move place is already taken");
+            
             if (_player1.Turn == true)
             {
                 switch (move)

@@ -60,14 +60,16 @@ namespace Server.Manager
         {
             var bytes = new byte[1024];
             _streamPlayer1.Read(bytes , 0, bytes.Length);
-            NamePlayer1 = PacketManager.GetPacket(bytes);
+            string name = PacketManager.GetPacket(bytes);
+            NamePlayer1 = name.Substring(0, name.IndexOf("0") + 1);
             return Task.CompletedTask;
         }
         private Task NamePlayerTwo()
         {
             var bytes = new byte[1024];
             _streamPlayer2.Read(bytes, 0, bytes.Length);
-            NamePlayer2 = PacketManager.GetPacket(bytes);
+            string name = PacketManager.GetPacket(bytes);
+            NamePlayer2 = name.Substring(0, name.IndexOf("0") + 1);
             return Task.CompletedTask;
         }
     }
