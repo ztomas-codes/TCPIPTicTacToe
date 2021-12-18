@@ -18,13 +18,10 @@ namespace Server.Manager
         NetworkStream StreamPlayer1 { get; set; }
         NetworkStream StreamPlayer2 { get; set; }
         List<string> PossiblePackets = new List<string>();
-        private bool _isPlayer1Turn { get; set; } = true;
-        private bool _isPlayer2Turn { get; set; } = false;
-        private byte[] Player1Packet { get; set; }
-        private byte[] Player2PAcket { get; set; }
         private List<TcpClient> players = new List<TcpClient>();
 
         private Task _task { get; set; } 
+        private Task _task2 { get; set; }
 
 
         public GameManager(Player player1, Player player2)
@@ -40,7 +37,8 @@ namespace Server.Manager
             PossiblePackets.Add(PacketManager.NOTYOURTURN);
             players.Add(player1.Client);
             players.Add(player2.Client);
-            _task = Task.Run(() => Listen());
+            _task = Task.Run(async() => ListenPl1());
+            _task2 = Task.Run(async() => ListenPl2());
             
         }
 
@@ -62,20 +60,18 @@ namespace Server.Manager
 
 
         }
-        private void Listen()
+        private void ListenPl1()
         {
             while(true)
             {
                 while (true)
                 {
                     byte[] bytes1 = new byte[1024];
-                    byte[] bytes2 = new byte[1024];
-                    StreamPlayer1.Read(bytes1, 0, bytes1.Length);
-                    StreamPlayer2.Read(bytes2, 0, bytes2.Length);
                     
+                    StreamPlayer1.Read(bytes1, 0, bytes1.Length);
                     if (!CheckIfBothConnected())
                     {
-                         var packet = PacketManager.CreatePacket($"{PacketManager.DISCONNECT}|{_player1.Name} disconnected");
+                        var packet = PacketManager.CreatePacket($"{PacketManager.DISCONNECT}|{_player1.Name} disconnected");
                         StreamPlayer1.Write(packet, 0, packet.Length);
                         StreamPlayer1.Dispose();
                         StreamPlayer2.Write(packet, 0, packet.Length);
@@ -83,10 +79,28 @@ namespace Server.Manager
                         break;
                     }
                     SortPackets(bytes1 , _player1 , _player2);
-                    SortPackets(bytes2, _player2, _player1);
+                    
                     
                 }
             }
+        }
+        private void ListenPl2()
+        {
+            while (true)
+            {
+                byte[] bytes2 = new byte[1024];
+                StreamPlayer2.Read(bytes2, 0, bytes2.Length);
+                if (!CheckIfBothConnected())
+                {
+                    var packet = PacketManager.CreatePacket($"{PacketManager.DISCONNECT}|{_player1.Name} disconnected");
+
+                    StreamPlayer2.Write(packet, 0, packet.Length);
+                    StreamPlayer2.Dispose();
+                    break;
+                }
+                SortPackets(bytes2, _player2, _player1);
+            }
+
         }
         private bool CheckIfBothConnected()
         {
@@ -118,11 +132,13 @@ namespace Server.Manager
                     
                    if(packetString.StartsWith(PacketManager.MOVE) && pl.Turn == true)
                    {
-                        int move = RemoveAllCharFromInt(packetString);
-                        CheckIfFree(move, pl);
-                        InsertIntoBoard(move , pl.Char);
-                        pl.Turn = false;
-                        pl1.Turn = true;
+                         int move = RemoveAllCharFromInt(packetString);
+                         if (CheckIfFree(move, pl))
+                         {
+                            InsertIntoBoard(move, pl.Char);
+                            pl.Turn = false;
+                            pl1.Turn = true;
+                         }
                    }
                    
                 //}
@@ -136,46 +152,55 @@ namespace Server.Manager
             {
                 case 1:
                     board[0, 0] = charToInsert;
+                    boardPacket = Encoding.Default.GetBytes(BuildBoard());
                     StreamPlayer1.Write(boardPacket, 0, boardPacket.Length);
                     StreamPlayer2.Write(boardPacket , 0 , boardPacket.Length);
                     break;
                 case 2:
                     board[0, 1] = charToInsert;
+                    boardPacket = Encoding.Default.GetBytes(BuildBoard());
                     StreamPlayer1.Write(boardPacket, 0, boardPacket.Length);
                     StreamPlayer2.Write(boardPacket, 0, boardPacket.Length);
                     break;
                 case 3:
                     board[0, 2] = charToInsert;
+                    boardPacket = Encoding.Default.GetBytes(BuildBoard());
                     StreamPlayer1.Write(boardPacket, 0, boardPacket.Length);
                     StreamPlayer2.Write(boardPacket, 0, boardPacket.Length);
                     break;
                 case 4:
                     board[1, 0] = charToInsert;
+                    boardPacket = Encoding.Default.GetBytes(BuildBoard());
                     StreamPlayer1.Write(boardPacket, 0, boardPacket.Length);
                     StreamPlayer2.Write(boardPacket, 0, boardPacket.Length);
                     break;
                 case 5:
                     board[1, 1] = charToInsert;
+                    boardPacket = Encoding.Default.GetBytes(BuildBoard());
                     StreamPlayer1.Write(boardPacket, 0, boardPacket.Length);
                     StreamPlayer2.Write(boardPacket, 0, boardPacket.Length);
                     break;
                 case 6:
                     board[1, 2] = charToInsert;
+                    boardPacket = Encoding.Default.GetBytes(BuildBoard());
                     StreamPlayer1.Write(boardPacket, 0, boardPacket.Length);
                     StreamPlayer2.Write(boardPacket, 0, boardPacket.Length);
                     break;
                 case 7:
                     board[2, 0] = charToInsert;
+                    boardPacket = Encoding.Default.GetBytes(BuildBoard());
                     StreamPlayer1.Write(boardPacket, 0, boardPacket.Length);
                     StreamPlayer2.Write(boardPacket, 0, boardPacket.Length);
                     break;
                 case 8:
                     board[2, 1] = charToInsert;
+                    boardPacket = Encoding.Default.GetBytes(BuildBoard());
                     StreamPlayer1.Write(boardPacket, 0, boardPacket.Length);
                     StreamPlayer2.Write(boardPacket, 0, boardPacket.Length);
                     break;
                 case 9:
                     board[2, 2] = charToInsert;
+                    boardPacket = Encoding.Default.GetBytes(BuildBoard());
                     StreamPlayer1.Write(boardPacket, 0, boardPacket.Length);
                     StreamPlayer2.Write(boardPacket, 0, boardPacket.Length);
                     break;
