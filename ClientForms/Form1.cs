@@ -42,7 +42,12 @@ namespace ClientForms
             try
             {
                 new PacketManager();
-                new PlayerClient("127.0.0.1", 8888);
+                if (!(nameTextBox.Text == "" && nameTextBox.Text == " "))
+                {
+                    new PlayerClient("127.0.0.1", 8888, nameTextBox.Text);
+                    nameTextBox.Hide();
+                }
+                else Output.WriteLine("Nezadane jméno");
             }
             catch
             {

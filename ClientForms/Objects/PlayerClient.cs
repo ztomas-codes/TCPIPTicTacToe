@@ -15,16 +15,20 @@ namespace Client
         public NetworkStream stream;
         public Task _task;
 
+        public string Name;
+
         public static PlayerClient Instance = null;
 
-        public PlayerClient(string server,int port)
+        public PlayerClient(string server,int port, string name)
         {
             Instance = this;
+            Name = name;
             tcpclient = new TcpClient(server, port);
                 
             stream = tcpclient.GetStream();
             _task = Task.Run(() => Listener());
             Output.WriteLine("client connected");
+            PacketManager.Instance.SendName(name);
         }
 
         public void Listener()
