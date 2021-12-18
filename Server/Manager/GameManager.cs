@@ -79,6 +79,7 @@ namespace Server.Manager
                         break;
                     }
                     SortPackets(bytes1 , _player1 , _player2);
+                    System.Console.WriteLine(PacketManager.GetPacket(bytes1));
                     
                     
                 }
@@ -99,6 +100,7 @@ namespace Server.Manager
                     break;
                 }
                 SortPackets(bytes2, _player2, _player1);
+                System.Console.WriteLine(PacketManager.GetPacket(bytes2));
             }
 
         }
