@@ -204,14 +204,12 @@ namespace Server.Manager
         }
         private void SortPackets(byte[] packet , Player pl , Player pl1)
         {
-            string packetString = PacketManager.GetPacket(packet);
-            foreach (var _packet in PossiblePackets)
-            {
+                 string packetString = PacketManager.GetPacket(packet);
+           
                 if(packetString.StartsWith(PacketManager.MOVE) && pl.Turn == true)  
                 {
-                    int move = RemoveAllCharFromInt(packetString);
-                    if (CheckIfFree(move))
-                        
+                    int move = RemoveAllCharFromInt(packetString.Replace("|" , ""));
+                    if (CheckIfFree(move)) 
                     {
                         
                         InsertIntoBoard(move, pl.Char);
@@ -219,9 +217,10 @@ namespace Server.Manager
                         pl.Turn = false;
         
                         pl1.Turn = true;
+                        System.Console.WriteLine(move);
                     }
                 }
-            }
+            
         }
         private void InsertIntoBoard(int move, char charToInsert)
         {
