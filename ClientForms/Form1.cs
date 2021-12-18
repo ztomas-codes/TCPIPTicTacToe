@@ -14,13 +14,13 @@ namespace ClientForms
         {
             //only added your code to build app app for the first time
             new PacketManager();
-            new PlayerClient("127.0.0.1", 8888);
             try
             {
+                new PlayerClient("127.0.0.1", 8888);
                 PlayerClient.Instance._task.Start();
             }catch
             {
-
+                Output.WriteLine("Server nebyl nalezen");
             }
         }
 
