@@ -14,18 +14,20 @@ namespace Server.Manager
         private Player _player1;
         private Player _player2;
         private char[,] board = new char[,] { { ' ', ' ', ' ' }, { ' ', ' ', ' ' }, { ' ', ' ', ' ' } };
-        NetworkStream Stream {get; set;}
+        NetworkStream StreamPlayer1 {get; set;}
+        NetworkStream StreamPlayer2 {get; set;}
         List<string> PossiblePackets = new List<string>();
         private bool _isPlayer1Turn { get; set; } = true;
         private bool _isPlayer2Turn { get; set; } = false;
         private List<TcpClient> players = new List<TcpClient>();
 
 
-        public GameManager(Player player1 , Player player2, NetworkStream str)
+        public GameManager(Player player1 , Player player2, NetworkStream str , NetworkStream str2)
         {
             _player1 = player1;
             _player2 = player2;
-            Stream = str;
+            StreamPlayer1 = str;
+            StreamPlayer2 = str2;
             PossiblePackets.Add(PacketManager.WIN);
             PossiblePackets.Add(PacketManager.MOVE);
             PossiblePackets.Add(PacketManager.TURN);
@@ -40,25 +42,30 @@ namespace Server.Manager
             byte[] packet = PacketManager.CreatePacket($"{PacketManager.STARTGAME}|game started {_player1.Name} vs {_player2.Name}");
                 _player1.Char = 'O';
                 _player2.Char = 'X';
-                Stream.Write(packet, 0, packet.Length);
-                Stream.Flush();
+                StreamPlayer1.Write(packet, 0, packet.Length);
+                StreamPlayer1.Flush();
+                StreamPlayer2.Write(packet, 0, packet.Length);
+                StreamPlayer2.Flush();
                 _isPlayer1Turn = true;
                 _isPlayer2Turn = false;
                 while (true)
                 {
                     byte[] bytes = new byte[1024];
-                    Stream.Read(bytes, 0, bytes.Length);
+                    StreamPlayer1.Read(bytes, 0, bytes.Length);
+                    StreamPlayer2.Read(bytes, 0, bytes.Length);
                    string mess = PacketManager.GetPacket(bytes);
                    if (!CheckIfBothConnected())
                    {
                        packet = PacketManager.CreatePacket($"{PacketManager.DISCONNECT}|{_player1.Name} disconnected");
-                       Stream.Write(packet , 0 , packet.Length);
-                       Stream.Dispose();
+                       StreamPlayer1.Write(packet , 0 , packet.Length);
+                       StreamPlayer1.Dispose();
+                       StreamPlayer2.Write(packet , 0 , packet.Length);
+                       StreamPlayer2.Dispose();
                        break;
                    }
                     SortPackets(bytes);
                    int move = RemoveAllCharFromInt(mess);
-                   CheckIfFree(5);
+                   CheckIfFree(5 , _player1);
                   
                    
                 }
@@ -82,9 +89,13 @@ namespace Server.Manager
                 if (!packetString.StartsWith(_packet))
                 {
                     byte[] error = Encoding.ASCII.GetBytes($"{PacketManager.DISCONNECT}|Disconnected because of wrong packet");
-                    Stream.Write(error , 0 , error.Length);
-                    Stream.Flush();
-                    Stream.Dispose();
+                    StreamPlayer1.Write(error , 0 , error.Length);
+                    StreamPlayer1.Flush();
+                    StreamPlayer1.Dispose();
+                    StreamPlayer2.Write(error , 0 , error.Length);
+                    StreamPlayer2.Flush();
+                    StreamPlayer2.Dispose();
+                    
                 }
             }
         }
@@ -121,11 +132,12 @@ namespace Server.Manager
                     board[2, 2] = charToInsert;
                     break;
                 default:
-                    Stream.Write(packet, 0, packet.Length);
+                    StreamPlayer1.Write(packet, 0, packet.Length);
+                    StreamPlayer2.Write(packet, 0, packet.Length);
                     break;
             }
         }
-        private bool CheckIfFree(int move)
+        private bool CheckIfFree(int move, Player pl)
         {
             byte[] packet = Encoding.Default.GetBytes($"{PacketManager.WRONGMOVE}|Wrong move place is already taken");
             switch (move)
@@ -133,68 +145,70 @@ namespace Server.Manager
                 case 1:
                     if (board[0,0] != ' ')
                     {
-                        Stream.Write(packet, 0, packet.Length);
+                        StreamPlayer1.Write(packet, 0, packet.Length);
                         return false;
                     }
                     break;
                 case 2:
                     if (board[0,1] != ' ')
                     {
-                        Stream.Write(packet, 0, packet.Length);
+                        StreamPlayer1.Write(packet, 0, packet.Length);
                         return false;
                     }
                     break;
                 case 3:
                     if (board[0,2] != ' ')
                     {
-                        Stream.Write(packet, 0, packet.Length);
+                        StreamPlayer1.Write(packet, 0, packet.Length);
                         return false;
                     }     
                     break;
                 case 4:
                     if (board[1,0] != ' ')
                     {
-                        Stream.Write(packet, 0, packet.Length);
+                        StreamPlayer1.Write(packet, 0, packet.Length);
                         return false;
                     }
                     break;
                 case 5:
                     if (board[1,1] != ' ')
                     {
-                        Stream.Write(packet, 0, packet.Length);
+                        StreamPlayer1.Write(packet, 0, packet.Length);
                         return false;
                     }
                     break;
                 case 6:
                     if(board[1,2] != ' ')
                     {
-                        Stream.Write(packet, 0, packet.Length);
+                        StreamPlayer1.Write(packet, 0, packet.Length);
                         return false;
                     }
                     break;
                 case 7:
                     if (board[2,0] != ' ')
                     {
-                        Stream.Write(packet, 0, packet.Length);
+                        StreamPlayer1.Write(packet, 0, packet.Length);
                         return false;
                     }
                     break;
                 case 8:
                     if (board[2,1] != ' ')
                     {
-                        Stream.Write(packet, 0, packet.Length);
+                        StreamPlayer1.Write(packet, 0, packet.Length);
                         return false;
                     }
                     break;
                 case 9:
                     if (board[2,2] != ' ')
                     {
-                        Stream.Write(packet, 0, packet.Length);
+                        StreamPlayer1.Write(packet, 0, packet.Length);
                         return false;
                     }
                     break;
                 default:
                     //TODO: Send error packet if input is wrong
+                     byte[] errorMove = Encoding.Default.GetBytes($"{PacketManager.WRONGMOVE}|Wrong move");
+                    StreamPlayer1.Write(errorMove, 0, errorMove.Length);
                     return true;
             }
 
