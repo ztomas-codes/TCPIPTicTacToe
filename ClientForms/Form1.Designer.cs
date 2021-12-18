@@ -1,6 +1,6 @@
 ﻿namespace ClientForms
 {
-    partial class Form1
+    partial class TicTacToeClient
     {
         /// <summary>
         ///  Required designer variable.
@@ -53,6 +53,7 @@
             this.metroButton1.Size = new System.Drawing.Size(86, 45);
             this.metroButton1.TabIndex = 11;
             this.metroButton1.Text = "1";
+            this.metroButton1.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.metroButton1.UseSelectable = true;
             // 
             // metroButton2
@@ -62,6 +63,7 @@
             this.metroButton2.Size = new System.Drawing.Size(86, 45);
             this.metroButton2.TabIndex = 12;
             this.metroButton2.Text = "1";
+            this.metroButton2.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.metroButton2.UseSelectable = true;
             // 
             // metroButton3
@@ -71,6 +73,7 @@
             this.metroButton3.Size = new System.Drawing.Size(86, 45);
             this.metroButton3.TabIndex = 13;
             this.metroButton3.Text = "1";
+            this.metroButton3.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.metroButton3.UseSelectable = true;
             // 
             // metroButton4
@@ -80,6 +83,7 @@
             this.metroButton4.Size = new System.Drawing.Size(86, 45);
             this.metroButton4.TabIndex = 14;
             this.metroButton4.Text = "1";
+            this.metroButton4.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.metroButton4.UseSelectable = true;
             // 
             // metroButton5
@@ -89,6 +93,7 @@
             this.metroButton5.Size = new System.Drawing.Size(86, 45);
             this.metroButton5.TabIndex = 15;
             this.metroButton5.Text = "1";
+            this.metroButton5.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.metroButton5.UseSelectable = true;
             // 
             // metroButton6
@@ -98,6 +103,7 @@
             this.metroButton6.Size = new System.Drawing.Size(86, 45);
             this.metroButton6.TabIndex = 16;
             this.metroButton6.Text = "1";
+            this.metroButton6.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.metroButton6.UseSelectable = true;
             // 
             // metroButton7
@@ -107,6 +113,7 @@
             this.metroButton7.Size = new System.Drawing.Size(86, 45);
             this.metroButton7.TabIndex = 17;
             this.metroButton7.Text = "1";
+            this.metroButton7.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.metroButton7.UseSelectable = true;
             // 
             // metroButton8
@@ -116,6 +123,7 @@
             this.metroButton8.Size = new System.Drawing.Size(86, 45);
             this.metroButton8.TabIndex = 18;
             this.metroButton8.Text = "1";
+            this.metroButton8.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.metroButton8.UseSelectable = true;
             // 
             // metroButton9
@@ -125,6 +133,7 @@
             this.metroButton9.Size = new System.Drawing.Size(86, 45);
             this.metroButton9.TabIndex = 19;
             this.metroButton9.Text = "1";
+            this.metroButton9.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.metroButton9.UseSelectable = true;
             // 
             // metroButton10
@@ -136,6 +145,7 @@
             this.metroButton10.Size = new System.Drawing.Size(270, 147);
             this.metroButton10.TabIndex = 20;
             this.metroButton10.Text = "Start";
+            this.metroButton10.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.metroButton10.UseSelectable = true;
             this.metroButton10.UseVisualStyleBackColor = false;
             this.metroButton10.Click += new System.EventHandler(this.button1_Click);
@@ -143,7 +153,8 @@
             // Log
             // 
             this.Log.AutoSize = true;
-            this.Log.ForeColor = System.Drawing.Color.DarkRed;
+            this.Log.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
+            this.Log.ForeColor = System.Drawing.Color.Red;
             this.Log.Location = new System.Drawing.Point(21, 287);
             this.Log.Name = "Log";
             this.Log.Size = new System.Drawing.Size(0, 15);
@@ -151,13 +162,19 @@
             // 
             // nameTextBox
             // 
-            this.nameTextBox.Location = new System.Drawing.Point(71, 57);
+            this.nameTextBox.BackColor = System.Drawing.SystemColors.MenuText;
+            this.nameTextBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.nameTextBox.ForeColor = System.Drawing.SystemColors.Window;
+            this.nameTextBox.Location = new System.Drawing.Point(71, 76);
             this.nameTextBox.Name = "nameTextBox";
             this.nameTextBox.Size = new System.Drawing.Size(100, 23);
             this.nameTextBox.TabIndex = 22;
             // 
             // port
             // 
+            this.port.BackColor = System.Drawing.SystemColors.MenuText;
+            this.port.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.port.ForeColor = System.Drawing.SystemColors.Window;
             this.port.Location = new System.Drawing.Point(127, 261);
             this.port.Name = "port";
             this.port.Size = new System.Drawing.Size(35, 23);
@@ -166,6 +183,9 @@
             // 
             // ip
             // 
+            this.ip.BackColor = System.Drawing.SystemColors.MenuText;
+            this.ip.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.ip.ForeColor = System.Drawing.SystemColors.Window;
             this.ip.Location = new System.Drawing.Point(21, 261);
             this.ip.Name = "ip";
             this.ip.Size = new System.Drawing.Size(100, 23);
@@ -175,7 +195,8 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(23, 60);
+            this.label1.ForeColor = System.Drawing.Color.White;
+            this.label1.Location = new System.Drawing.Point(23, 79);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(42, 15);
             this.label1.TabIndex = 25;
@@ -184,12 +205,12 @@
             // score
             // 
             this.score.AutoSize = true;
-            this.score.Location = new System.Drawing.Point(21, 83);
+            this.score.Location = new System.Drawing.Point(23, 60);
             this.score.Name = "score";
             this.score.Size = new System.Drawing.Size(0, 15);
             this.score.TabIndex = 26;
             // 
-            // Form1
+            // TicTacToeClient
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -211,9 +232,10 @@
             this.Controls.Add(this.metroButton2);
             this.Controls.Add(this.metroButton1);
             this.MaximizeBox = false;
-            this.Name = "Form1";
+            this.Name = "TicTacToeClient";
             this.Resizable = false;
-            this.Text = "Form1";
+            this.Text = "TicTacToe - Client";
+            this.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);
             this.PerformLayout();

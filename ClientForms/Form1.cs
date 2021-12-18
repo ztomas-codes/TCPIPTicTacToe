@@ -3,14 +3,14 @@ using MetroFramework.Controls;
 
 namespace ClientForms
 {
-    public partial class Form1 : MetroFramework.Forms.MetroForm
+    public partial class TicTacToeClient : MetroFramework.Forms.MetroForm
     {
 
-        public static Form1 Instance;
+        public static TicTacToeClient Instance;
         public static List<MetroButton> buttons = new List<MetroButton>();
         public static Label scoreLabel;
 
-        public Form1()
+        public TicTacToeClient()
         {
             InitializeComponent();
             Output.OutputWindow = Log;
@@ -29,6 +29,7 @@ namespace ClientForms
                     buttons.Add(button);
                 }
             }
+
         }
 
         private void Button_Click(object? sender, EventArgs e)

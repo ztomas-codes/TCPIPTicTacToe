@@ -72,7 +72,7 @@ namespace Client
             List<string> split = packet.Split('|').ToList();
             split.RemoveAt(0);
 
-            Form1.scoreLabel.Text = $"You: {split[0]} Enemy: {split[1]}";
+            TicTacToeClient.scoreLabel.Text = $"You: {split[0]} Enemy: {split[1]}";
         }
 
         private void WrongMove(string packet)
@@ -102,7 +102,7 @@ namespace Client
             split.Reverse();
 
             int i = 0;
-            foreach(var button in Form1.buttons)
+            foreach(var button in TicTacToeClient.buttons)
             {
                 button.Text = $"{split[i].Remove(1)}";
                 switch (split[i])
