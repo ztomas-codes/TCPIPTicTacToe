@@ -38,35 +38,35 @@ namespace Client
         public void Run(string packet)
         {
             Console.WriteLine(packet);
-            string[] packetList = packet.Split("|");
-            switch (packetList[0])
-            {
-                case WIN:
-                    Win();
-                    break;
-                case TURN:
-                    Turn(packetList[1]);
-                    break;
-                case BOARD:
-                    List<String> board = packetList.ToList();
-                    board.RemoveAt(0);
-                    Board(board.ToArray());
-                    break;
-                case LOSE:
-                    Lose();
-                    break;
-                case STARTGAME:
-                    StartGame();
-                    break;
-                case WRONGMOVE:
-                    WrongMove();
-                    break;
-                case DISCONNECT:
-                    Disconnect();
-                    break;
-                default:
-                    break;
-            }
+            //string[] packetList = packet.Split("|");
+            //switch (packetList[0])
+            //{
+            //    case WIN:
+            //        Win();
+            //        break;
+            //    case TURN:
+            //        Turn(packetList[1]);
+            //        break;
+            //    case BOARD:
+            //        List<String> board = packetList.ToList();
+            //        board.RemoveAt(0);
+            //        Board(board.ToArray());
+            //        break;
+            //    case LOSE:
+            //        Lose();
+            //        break;
+            //    case STARTGAME:
+            //        StartGame();
+            //        break;
+            //    case WRONGMOVE:
+            //        WrongMove();
+            //        break;
+            //    case DISCONNECT:
+            //        Disconnect();
+            //        break;
+            //    default:
+            //        break;
+            //}
 
         }
 
