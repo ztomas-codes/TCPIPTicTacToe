@@ -25,7 +25,7 @@ namespace Client
                 
                 stream = tcpclient.GetStream();
                 _task = Task.Run(() => Listener());
-                Console.WriteLine("client connected");
+                Output.WriteLine("client connected");
             }
         }
 
@@ -37,7 +37,7 @@ namespace Client
                 byte[] bytes = new byte[100];
                 stream.Read(bytes, 0, bytes.Length);
                 pm.Run(Packets.GetPacket(bytes));
-                Console.WriteLine(Packets.GetPacket(bytes));
+                Output.WriteLine(Packets.GetPacket(bytes));
                 
             }
         }

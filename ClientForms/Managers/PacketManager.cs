@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ClientForms;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net.Sockets;
@@ -66,34 +67,34 @@ namespace Client
         //Listeners
         private void Win()
         {
-            Console.WriteLine("Vyhral jsi");
+            Output.WriteLine("Vyhral jsi");
         }
 
         private void Lose()
         {
-            Console.WriteLine("Prohral jsi");
+            Output.WriteLine("Prohral jsi");
         }
 
         private void WrongMove()
         {
-            Console.WriteLine("Tento tah neni k dispozici");
+            Output.WriteLine("Tento tah neni k dispozici");
         }
         
         private void Turn(string boolean)
         {
             if (boolean == "1")
-            Console.WriteLine("Ted jsi na tahu");
+                Output.WriteLine("Ted jsi na tahu");
             else
-            Console.WriteLine("Ted nejsi na tahu");
+                Output.WriteLine("Ted nejsi na tahu");
         }
 
         private void Disconnect()
         {
-            Console.WriteLine("Byl jsi odpojen");
+            Output.WriteLine("Byl jsi odpojen");
         }
         private void StartGame()
         {
-            Console.WriteLine("Hra byla odstartovana");
+            Output.WriteLine("Hra byla odstartovana");
         }
 
         //Actions
