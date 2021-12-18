@@ -375,70 +375,70 @@ namespace Server.Manager
                         case 1:
                             if (board[0, 0] != '1')
                             {
-                                _player1.NetworkStream.Write(packet, 0, packet.Length);
+                                _player2.NetworkStream.Write(packet, 0, packet.Length);
                                 return false;
                             }
                             break;
                         case 2:
                             if (board[0, 1] != '2')
                             {
-                                _player1.NetworkStream.Write(packet, 0, packet.Length);
+                                _player2.NetworkStream.Write(packet, 0, packet.Length);
                                 return false;
                             }
                             break;
                         case 3:
                             if (board[0, 2] != '3')
                             {
-                                _player1.NetworkStream.Write(packet, 0, packet.Length);
+                                _player2.NetworkStream.Write(packet, 0, packet.Length);
                                 return false;
                             }
                             break;
                         case 4:
                             if (board[1, 0] != '4')
                             {
-                                _player1.NetworkStream.Write(packet, 0, packet.Length);
+                                _player2.NetworkStream.Write(packet, 0, packet.Length);
                                 return false;
                             }
                             break;
                         case 5:
                             if (board[1, 1] != '5')
                             {
-                                _player1.NetworkStream.Write(packet, 0, packet.Length);
+                                _player2.NetworkStream.Write(packet, 0, packet.Length);
                                 return false;
                             }
                             break;
                         case 6:
                             if (board[1, 2] != '6')
                             {
-                                _player1.NetworkStream.Write(packet, 0, packet.Length);
+                                _player2.NetworkStream.Write(packet, 0, packet.Length);
                                 return false;
                             }
                             break;
                         case 7:
                             if (board[2, 0] != '7')
                             {
-                                _player1.NetworkStream.Write(packet, 0, packet.Length);
+                                _player2.NetworkStream.Write(packet, 0, packet.Length);
                                 return false;
                             }
                             break;
                         case 8:
                             if (board[2, 1] != '8')
                             {
-                                _player1.NetworkStream.Write(packet, 0, packet.Length);
+                                _player2.NetworkStream.Write(packet, 0, packet.Length);
                                 return false;
                             }
                             break;
                         case 9:
                             if (board[2, 2] != '9')
                             {
-                                _player1.NetworkStream.Write(packet, 0, packet.Length);
+                                _player2.NetworkStream.Write(packet, 0, packet.Length);
                                 return false;
                             }
                             break;
                         default:
 
                             byte[] errorMove = PacketManager.CreatePacket($"{PacketManager.WRONGMOVE}|Wrong move");
-                            _player1.NetworkStream.Write(errorMove, 0, errorMove.Length);
+                            _player2.NetworkStream.Write(errorMove, 0, errorMove.Length);
                             return true;
                     }
                 }
