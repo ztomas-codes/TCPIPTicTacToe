@@ -49,7 +49,6 @@ namespace Server
                         {
                             var paket = Encoding.Default.GetBytes("Waiting for players");
                             await Task.Delay(10000);
-                            
                             Console.WriteLine("sent packet");
                             _streamPlayer1.Write(paket, 0, paket.Length);
                         }

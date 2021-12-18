@@ -53,7 +53,7 @@ namespace Server.Manager
             _player2.NetworkStream.Flush();
             _player1.Turn = true;
             _player2.Turn = false;
-            var board = Encoding.Default.GetBytes(BuildBoard());
+            var board = PacketManager.CreatePacket(BuildBoard());
             _player1.NetworkStream.Write(board , 0 , board.Length);
             _player2.NetworkStream.Write(board , 0 , board.Length);
        
@@ -113,7 +113,7 @@ namespace Server.Manager
         }
         private void SortPackets(byte[] packet , Player pl , Player pl1)
         {
-            string packetString = Encoding.ASCII.GetString(packet);
+            string packetString = PacketManager.GetPacket(packet);
             foreach (var _packet in PossiblePackets)
             {
                 if(packetString.StartsWith(PacketManager.MOVE) && pl.Turn == true)  
@@ -134,61 +134,61 @@ namespace Server.Manager
         }
         private void InsertIntoBoard(int move, char charToInsert)
         {
-            byte[] packet = Encoding.Default.GetBytes($"{PacketManager.WRONGMOVE}|Wrong move");
-            var boardPacket = Encoding.Default.GetBytes(BuildBoard());
+            byte[] packet = PacketManager.CreatePacket($"{PacketManager.WRONGMOVE}|Wrong move");
+            var boardPacket = PacketManager.CreatePacket(BuildBoard());
             switch (move)
             {
                 case 1:
                     board[0, 0] = charToInsert;
-                    boardPacket = Encoding.Default.GetBytes(BuildBoard());
+                    boardPacket = PacketManager.CreatePacket(BuildBoard());
                     _player1.NetworkStream.Write(boardPacket, 0, boardPacket.Length);
                     _player2.NetworkStream.Write(boardPacket , 0 , boardPacket.Length);
                     break;
                 case 2:
                     board[0, 1] = charToInsert;
-                    boardPacket = Encoding.Default.GetBytes(BuildBoard());
+                    boardPacket = PacketManager.CreatePacket(BuildBoard());
                     _player1.NetworkStream.Write(boardPacket, 0, boardPacket.Length);
                     _player2.NetworkStream.Write(boardPacket, 0, boardPacket.Length);
                     break;
                 case 3:
                     board[0, 2] = charToInsert;
-                    boardPacket = Encoding.Default.GetBytes(BuildBoard());
+                    boardPacket = PacketManager.CreatePacket(BuildBoard());
                     _player1.NetworkStream.Write(boardPacket, 0, boardPacket.Length);
                     _player2.NetworkStream.Write(boardPacket, 0, boardPacket.Length);
                     break;
                 case 4:
                     board[1, 0] = charToInsert;
-                    boardPacket = Encoding.Default.GetBytes(BuildBoard());
+                    boardPacket = PacketManager.CreatePacket(BuildBoard());
                     _player1.NetworkStream.Write(boardPacket, 0, boardPacket.Length);
                     _player2.NetworkStream.Write(boardPacket, 0, boardPacket.Length);
                     break;
                 case 5:
                     board[1, 1] = charToInsert;
-                    boardPacket = Encoding.Default.GetBytes(BuildBoard());
+                    boardPacket = PacketManager.CreatePacket(BuildBoard());
                     _player1.NetworkStream.Write(boardPacket, 0, boardPacket.Length);
                     _player2.NetworkStream.Write(boardPacket, 0, boardPacket.Length);
                     break;
                 case 6:
                     board[1, 2] = charToInsert;
-                    boardPacket = Encoding.Default.GetBytes(BuildBoard());
+                    boardPacket = PacketManager.CreatePacket(BuildBoard());
                     _player1.NetworkStream.Write(boardPacket, 0, boardPacket.Length);
                     _player2.NetworkStream.Write(boardPacket, 0, boardPacket.Length);
                     break;
                 case 7:
                     board[2, 0] = charToInsert;
-                    boardPacket = Encoding.Default.GetBytes(BuildBoard());
+                    boardPacket = PacketManager.CreatePacket(BuildBoard());
                     _player1.NetworkStream.Write(boardPacket, 0, boardPacket.Length);
                     _player2.NetworkStream.Write(boardPacket, 0, boardPacket.Length);
                     break;
                 case 8:
                     board[2, 1] = charToInsert;
-                    boardPacket = Encoding.Default.GetBytes(BuildBoard());
+                    boardPacket = PacketManager.CreatePacket(BuildBoard());
                     _player1.NetworkStream.Write(boardPacket, 0, boardPacket.Length);
                     _player2.NetworkStream.Write(boardPacket, 0, boardPacket.Length);
                     break;
                 case 9:
                     board[2, 2] = charToInsert;
-                    boardPacket = Encoding.Default.GetBytes(BuildBoard());
+                    boardPacket = PacketManager.CreatePacket(BuildBoard());
                     _player1.NetworkStream.Write(boardPacket, 0, boardPacket.Length);
                     _player2.NetworkStream.Write(boardPacket, 0, boardPacket.Length);
                     break;
@@ -200,7 +200,7 @@ namespace Server.Manager
         }
         private bool CheckIfFree(int move, Player pl)
         {
-            byte[] packet = Encoding.Default.GetBytes($"{PacketManager.WRONGMOVE}|Wrong move place is already taken");
+            byte[] packet = PacketManager.CreatePacket($"{PacketManager.WRONGMOVE}|Wrong move place is already taken");
             switch (move)
             {
                 case 1:
@@ -268,7 +268,7 @@ namespace Server.Manager
                     break;
                 default:
                     
-                    byte[] errorMove = Encoding.Default.GetBytes($"{PacketManager.WRONGMOVE}|Wrong move");
+                    byte[] errorMove = PacketManager.CreatePacket($"{PacketManager.WRONGMOVE}|Wrong move");
                     _player1.NetworkStream.Write(errorMove, 0, errorMove.Length);
                     return true;
             }
