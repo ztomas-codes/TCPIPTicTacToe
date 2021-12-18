@@ -116,32 +116,20 @@ namespace Server.Manager
             string packetString = Encoding.ASCII.GetString(packet);
             foreach (var _packet in PossiblePackets)
             {
-                //if (!packetString.StartsWith(_packet))
-                //{
-                //    byte[] error = Encoding.ASCII.GetBytes($"{PacketManager.DISCONNECT}|Disconnected because of wrong packet");
-                //    StreamPlayer1.Write(error, 0, error.Length);
-                //    StreamPlayer1.Flush();
-                //    StreamPlayer1.Dispose();
-                //    StreamPlayer2.Write(error, 0, error.Length);
-                //    StreamPlayer2.Flush();
-                //    StreamPlayer2.Dispose();
-
-                //}
-                //else
-                //{
-                    
-                   if(packetString.StartsWith(PacketManager.MOVE) && pl.Turn == true)
-                   {
-                         int move = RemoveAllCharFromInt(packetString);
-                         if (CheckIfFree(move, pl))
-                         {
-                            InsertIntoBoard(move, pl.Char);
-                            pl.Turn = false;
-                            pl1.Turn = true;
-                         }
-                   }
-                   
-                //}
+                if(packetString.StartsWith(PacketManager.MOVE) && pl.Turn == true)  
+                {
+                    int move = RemoveAllCharFromInt(packetString);
+                    if (CheckIfFree(move, pl))
+                        
+                    {
+                        
+                        InsertIntoBoard(move, pl.Char);
+                        
+                        pl.Turn = false;
+        
+                        pl1.Turn = true;
+                    }
+                }
             }
         }
         private void InsertIntoBoard(int move, char charToInsert)
