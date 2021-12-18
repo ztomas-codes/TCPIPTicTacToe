@@ -14,8 +14,8 @@ namespace Server
     class Program
     {
         public static List<TcpClient> Client { get; private set; }
-        private static NetworkStream _streamPlayer1 { get; set; }
-        private static NetworkStream _streamPlayer2 { get; set; }
+        public static NetworkStream _streamPlayer1 { get; set; }
+        public static NetworkStream _streamPlayer2 { get; set; }
         private static Task _Task { get; set; }
 
         static void Main(string[] args)
@@ -66,7 +66,7 @@ namespace Server
                     //TODO: Sort Name Packet
                     Player player1 = new Player(Client[0].Client.RemoteEndPoint.ToString(), 0, Client[0].Client.RemoteEndPoint.ToString(), 8888);
                     Player player2 = new Player(Client[1].Client.RemoteEndPoint.ToString(), 0, Client[1].Client.RemoteEndPoint.ToString(), 8888);
-                    GameManager gameManager = new GameManager(player1, player2, _streamPlayer1 , _streamPlayer2);
+                    GameManager gameManager = new GameManager(player1, player2);
                     
                     Client.Clear();
                     gameManager.StartGame();

@@ -4,6 +4,7 @@ using System.Data.Common;
 using System.Net.Sockets;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 using Server.Objects;
 
 namespace Server.Manager
@@ -23,13 +24,15 @@ namespace Server.Manager
         private byte[] Player2PAcket { get; set; }
         private List<TcpClient> players = new List<TcpClient>();
 
+        private Task _task { get; set; } 
 
-        public GameManager(Player player1, Player player2, NetworkStream str, NetworkStream str2)
+
+        public GameManager(Player player1, Player player2)
         {
             _player1 = player1;
             _player2 = player2;
-            StreamPlayer1 = str;
-            StreamPlayer2 = str2;
+            StreamPlayer1 = Program._streamPlayer1;
+            StreamPlayer2 = Program._streamPlayer2;
             PossiblePackets.Add(PacketManager.WIN);
             PossiblePackets.Add(PacketManager.MOVE);
             PossiblePackets.Add(PacketManager.TURN);
@@ -37,6 +40,8 @@ namespace Server.Manager
             PossiblePackets.Add(PacketManager.NOTYOURTURN);
             players.Add(player1.Client);
             players.Add(player2.Client);
+            _task = Task.Run(() => Listen());
+            
         }
 
         public void StartGame()
@@ -85,7 +90,7 @@ namespace Server.Manager
         }
         private bool CheckIfBothConnected()
         {
-            return _player1.Client.Connected && _player2.Client.Connected;
+            return StreamPlayer1.CanRead && StreamPlayer2.CanRead;
 
         }
         private string CheckWinner()
@@ -97,19 +102,19 @@ namespace Server.Manager
             string packetString = Encoding.ASCII.GetString(packet);
             foreach (var _packet in PossiblePackets)
             {
-                if (!packetString.StartsWith(_packet))
-                {
-                    byte[] error = Encoding.ASCII.GetBytes($"{PacketManager.DISCONNECT}|Disconnected because of wrong packet");
-                    StreamPlayer1.Write(error, 0, error.Length);
-                    StreamPlayer1.Flush();
-                    StreamPlayer1.Dispose();
-                    StreamPlayer2.Write(error, 0, error.Length);
-                    StreamPlayer2.Flush();
-                    StreamPlayer2.Dispose();
+                //if (!packetString.StartsWith(_packet))
+                //{
+                //    byte[] error = Encoding.ASCII.GetBytes($"{PacketManager.DISCONNECT}|Disconnected because of wrong packet");
+                //    StreamPlayer1.Write(error, 0, error.Length);
+                //    StreamPlayer1.Flush();
+                //    StreamPlayer1.Dispose();
+                //    StreamPlayer2.Write(error, 0, error.Length);
+                //    StreamPlayer2.Flush();
+                //    StreamPlayer2.Dispose();
 
-                }
-                else
-                {
+                //}
+                //else
+                //{
                     
                    if(packetString.StartsWith(PacketManager.MOVE) && pl.Turn == true)
                    {
@@ -120,7 +125,7 @@ namespace Server.Manager
                         pl1.Turn = true;
                    }
                    
-                }
+                //}
             }
         }
         private void InsertIntoBoard(int move, char charToInsert)

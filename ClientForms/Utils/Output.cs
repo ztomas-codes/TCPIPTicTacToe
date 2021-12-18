@@ -12,7 +12,7 @@ namespace ClientForms
 
         public static void WriteLine(string text)
         {
-            OutputWindow.Text += text + "\n";
+            OutputWindow.Text += "\n" + text;
         }
         public static void Write(string text)
         {
