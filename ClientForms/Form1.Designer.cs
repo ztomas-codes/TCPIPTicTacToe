@@ -234,6 +234,7 @@
             this.MaximizeBox = false;
             this.Name = "TicTacToeClient";
             this.Resizable = false;
+            this.Style = MetroFramework.MetroColorStyle.Pink;
             this.Text = "TicTacToe - Client";
             this.Theme = MetroFramework.MetroThemeStyle.Dark;
             this.Load += new System.EventHandler(this.Form1_Load);
