@@ -26,7 +26,7 @@ namespace Client
             tcpclient = new TcpClient(server, port);
                 
             stream = tcpclient.GetStream();
-            _task = Task.Run(() => Listener());
+            _task = Task.Run(async() => Listener());
             Output.WriteLine("client connected");
             PacketManager.Instance.SendName(name);
         }
@@ -36,7 +36,7 @@ namespace Client
             PacketManager pm = PacketManager.Instance;
             while (true)
             { 
-                byte[] bytes = new byte[100];
+                byte[] bytes = new byte[1024];
                 stream.Read(bytes, 0, bytes.Length);
                 pm.Run(Packets.GetPacket(bytes));
             }
