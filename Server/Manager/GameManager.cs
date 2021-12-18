@@ -15,15 +15,15 @@ namespace Server.Manager
         private Player _player1;
         private Player _player2;
         private char[,] board { get; set; }
-        private char[,] boardSave = { { '1', '2', '3' }, { '4', '5', '6' }, { '7', '8', '9' } };
         List<string> PossiblePackets = new List<string>();
         private List<TcpClient> players = new List<TcpClient>();
 
-        private Task _task { get; set; } 
+        private Task _task { get; set; }
         private Task _task2 { get; set; }
+        private bool Running { get; set; } = false;
 
 
-        public GameManager(Player player1, Player player2 , NetworkStream _streamPlayer1 , NetworkStream _streamPlayer2)
+        public GameManager(Player player1, Player player2, NetworkStream _streamPlayer1, NetworkStream _streamPlayer2)
         {
             _player1 = player1;
             _player2 = player2;
@@ -36,14 +36,15 @@ namespace Server.Manager
             PossiblePackets.Add(PacketManager.NOTYOURTURN);
             players.Add(player1.Client);
             players.Add(player2.Client);
-            _task = Task.Run(async() => ListenPl1());
-            _task2 = Task.Run(async() => ListenPl2());
-            
+            _task = Task.Run(async () => ListenPl1());
+            _task2 = Task.Run(async () => ListenPl2());
+
         }
 
-        public void StartGame()
+        public async void StartGame()
         {
-
+            if (Running) return;
+             Running = true;
              ResetBoard();
              byte[] packet = PacketManager.CreatePacket($"{PacketManager.STARTGAME}|game started {_player1.Name} vs {_player2.Name}");
             _player1.Char = 'O';
@@ -56,6 +57,7 @@ namespace Server.Manager
             _player2.Turn = false;
             var Board = PacketManager.CreatePacket(BuildBoard());
             _player1.NetworkStream.Write(Board , 0 , Board.Length);
+            await Task.Delay(1000);
             _player2.NetworkStream.Write(Board , 0 , Board.Length);
             System.Console.WriteLine(PacketManager.GetPacket(Board));
        
@@ -72,6 +74,7 @@ namespace Server.Manager
             {
                 while (true)
                 {
+                    
                     byte[] bytes1 = new byte[1024];
                     
                     _player1.NetworkStream.Read(bytes1, 0, bytes1.Length);
@@ -214,24 +217,24 @@ namespace Server.Manager
         }
         private void SortPackets(byte[] packet , Player pl , Player pl1)
         {
-                 string packetString = PacketManager.GetPacket(packet);
+            string packetString = PacketManager.GetPacket(packet);
            
-                if(packetString.StartsWith(PacketManager.MOVE) && pl.Turn == true)  
+            if(packetString.StartsWith(PacketManager.MOVE) && pl.Turn == true)  
+            {
+                int move = RemoveAllCharFromInt(packetString.Replace("|" , ""));
+                if (CheckIfFree(move))
                 {
-                    int move = RemoveAllCharFromInt(packetString.Replace("|" , ""));
-                    if (CheckIfFree(move)) 
-                    {
-                        
-                        InsertIntoBoard(move, pl.Char);
-                        
-                        pl.Turn = false;
-        
-                        pl1.Turn = true;
-                        
-                    }
+
+                    InsertIntoBoard(move, pl.Char);
+
+                    pl.Turn = false;
+
+                    pl1.Turn = true;
+
                 }
+               
                 
-            
+            }
         }
         private void InsertIntoBoard(int move, char charToInsert)
         {
@@ -385,11 +388,10 @@ namespace Server.Manager
 
                         byte[] errorMove = PacketManager.CreatePacket($"{PacketManager.WRONGMOVE}|Wrong move");
                         _player1.NetworkStream.Write(errorMove, 0, errorMove.Length);
-                        return true;
+                        return false;
                 }
             }
-            else
-            {
+            
                 if (_player2.Turn == true)
                 {
                     switch (move)
@@ -461,9 +463,9 @@ namespace Server.Manager
 
                             byte[] errorMove = PacketManager.CreatePacket($"{PacketManager.WRONGMOVE}|Wrong move");
                             _player2.NetworkStream.Write(errorMove, 0, errorMove.Length);
-                            return true;
+                            return false;
                     }
-                }
+                
             }
 
             return true;
@@ -471,13 +473,31 @@ namespace Server.Manager
         private async void Win()
         {
             string winner = CheckWinner();
+            int lose = 0;
+            int winnerS = 0;
+            if (winner == _player1.Name)
+            {
+                lose = _player2.Score;
+                winnerS = _player1.Score;
+                var packet = PacketManager.CreatePacket($"{PacketManager.SCORE}|{winnerS}|{lose}");
+                var packetL = PacketManager.CreatePacket($"{PacketManager.SCORE}|{lose}|{winnerS}");
+                _player1.NetworkStream.Write(packet, 0, packet.Length);
+                _player2.NetworkStream.Write(packetL, 0, packetL.Length);
+            }
+            else
+            {
+                lose = _player1.Score;
+                winnerS = _player2.Score;
+                var packet = PacketManager.CreatePacket($"{PacketManager.SCORE}|{winnerS}|{lose}");
+                var packetL = PacketManager.CreatePacket($"{PacketManager.SCORE}|{lose}|{winnerS}");
+                _player1.NetworkStream.Write(packetL , 0 , packetL.Length);
+                _player2.NetworkStream.Write(packet, 0, packet.Length);
+                
+            }
             if(winner != null)
             {
-                
-                //var packet = PacketManager.CreatePacket($"{PacketManager.WIN} | {winner}");
-                //_player1.NetworkStream.Write(packet, 0, packet.Length);
-                //_player2.NetworkStream.Write(packet , 0 , packet.Length);
-                await Task.Delay(3000);
+                Running = false;
+                await Task.Delay(5000);
                 StartGame();
             }
         }

@@ -13,84 +13,27 @@ namespace Server
 {
     class Program
     {
-        public static List<TcpClient> Client { get; private set; }
-        public static NetworkStream _streamPlayer1 { get; set; }
-        public static NetworkStream _streamPlayer2 { get; set; }
-        static List<string> Players = new List<string>();
-        private static Task _Task { get; set; }
+        public static List<TcpClient> Clients { get; set; }
 
         static void Main(string[] args)
         {
-            Client = new List<TcpClient>();
-
+            Clients = new List<TcpClient>();
             TcpListener server = new TcpListener(8888);
-            TcpClient client = default(TcpClient);
-            int counter = 0;
+            server.Start();
             while (true)
             {
-                while (Client.Count <= 1)
+                Clients.Add(server.AcceptTcpClient());
+                if(Clients.Count == 2)
                 {
-                    server.Start();
-                    Console.WriteLine(" >>" + "Server started");
-                    client = server.AcceptTcpClient();
-                    Client.Add(client);
-                    Console.WriteLine($" {client.Client.RemoteEndPoint} >>" + "connected");
-                    if (_streamPlayer1 == null)
-                    {
-                        _streamPlayer1 = client.GetStream();
-                    }
-                    else
-                    {
-                        _streamPlayer2 = client.GetStream();
-                    }
-                   
-
-                    _Task = Task.Run(async ()
-                        =>
-                    {
-                        while (Client.Count == 1)
-                        {
-                            var paket = Encoding.Default.GetBytes("Waiting for players");
-                            await Task.Delay(10000);
-                            Console.WriteLine("sent packet");
-                            _streamPlayer1.Write(paket, 0, paket.Length);
-                        }
-                        if(Client.Count == 2)
-                        {
-                            _Task.Dispose();
-                        }
-                        
-                    });
-                }
-                //Task.Run(() => ListenPl1());
-
-                if (Client.Count == 2)
-                {
-                    //var name = new byte[1024];
-
-                    //_streamPlayer2.Read(name , 0 , name.Length);
-                    //Players.Add(PacketManager.GetPacket(name));
-                    //if (Players.Count == 2)
-                    //{
-                    //    //TODO: Sort Name Packet
-                        Player player1 = new Player(Client[0].Client.RemoteEndPoint.ToString(), 0, Client[0].Client.RemoteEndPoint.ToString(), 8888);
-                        Player player2 = new Player(Client[1].Client.RemoteEndPoint.ToString(), 0, Client[1].Client.RemoteEndPoint.ToString(), 8888);
-                        GameManager gameManager = new GameManager(player1, player2, _streamPlayer1, _streamPlayer2);
-
-                        Client.Clear();
-                        gameManager.StartGame();
-                    //}
+                    ServerManager mng = new ServerManager(Clients[0].GetStream(), Clients[1].GetStream() , Clients[0] , Clients[1]);
+                    mng.StartServer();
+                    Clients.Clear();
+                    
                 }
             }
 
         }
-        private static Task ListenPl1()
-        {
-            var name = new byte[1024];
-            _streamPlayer1.Read(name , 0 , name.Length);
-            Players.Add(PacketManager.GetPacket(name));
-            return Task.CompletedTask;
-        }
+   
         
     }
 }

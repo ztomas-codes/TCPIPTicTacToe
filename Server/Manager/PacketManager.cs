@@ -12,6 +12,7 @@ namespace Server.Manager
         public static readonly string DISCONNECT = "DIS";
         public static readonly string WRONGMOVE = "WRGM";
         public static readonly string STARTGAME = "STRG";
+        public static readonly string SCORE = "SCORE";
 
         public static byte[] CreatePacket(string str)
         {
