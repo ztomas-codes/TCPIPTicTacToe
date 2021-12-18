@@ -154,7 +154,7 @@
             // 
             this.Log.AutoSize = true;
             this.Log.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point);
-            this.Log.ForeColor = System.Drawing.Color.Red;
+            this.Log.ForeColor = System.Drawing.Color.Violet;
             this.Log.Location = new System.Drawing.Point(21, 287);
             this.Log.Name = "Log";
             this.Log.Size = new System.Drawing.Size(0, 15);
@@ -205,6 +205,7 @@
             // score
             // 
             this.score.AutoSize = true;
+            this.score.ForeColor = System.Drawing.Color.White;
             this.score.Location = new System.Drawing.Point(23, 60);
             this.score.Name = "score";
             this.score.Size = new System.Drawing.Size(0, 15);
@@ -214,7 +215,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(7F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(348, 368);
+            this.ClientSize = new System.Drawing.Size(309, 368);
             this.Controls.Add(this.score);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.ip);
