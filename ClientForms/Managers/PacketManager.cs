@@ -20,6 +20,7 @@ namespace Client
         const string DISCONNECT = "DISCONNECT";
         const string WRONGMOVE = "WRGM";
         const string STARTGAME = "STRG";
+        const string BOARD = "BOARD";
 
         const string NAME = "NAME";
 
@@ -36,6 +37,7 @@ namespace Client
 
         public void Run(string packet)
         {
+            Console.WriteLine(packet);
             string[] packetList = packet.Split("|");
             switch (packetList[0])
             {
@@ -44,6 +46,11 @@ namespace Client
                     break;
                 case TURN:
                     Turn(packetList[1]);
+                    break;
+                case BOARD:
+                    List<String> board = packetList.ToList();
+                    board.RemoveAt(0);
+                    Board(board.ToArray());
                     break;
                 case LOSE:
                     Lose();
@@ -79,7 +86,7 @@ namespace Client
         {
             Output.WriteLine("Tento tah neni k dispozici");
         }
-        
+
         private void Turn(string boolean)
         {
             if (boolean == "1")
@@ -97,11 +104,33 @@ namespace Client
             Output.WriteLine("Hra byla odstartovana");
         }
 
+        private void Board(string[] board)
+        {
+            string sboard = string.Empty;
+            board.ToList().ForEach(x => sboard += x);
+
+
+            char[,] chars = new char[3, 3];
+
+            int i = 0, j = 0;
+            sboard.ToCharArray().ToList().ForEach(x => 
+            {
+                chars[i, j] = x;
+
+                i++;
+                if (i == 3) { j++; j = 0; }
+            }
+            );
+
+            GameManager.SetGame(chars);
+        }
+
         //Actions
-        public void SendMove(int pole)
+        public void SendMove(string pole)
         {
             NetworkStream ns = PlayerClient.Instance.tcpclient.GetStream();
             ns.Write(Packets.CreatePacket($"{MOVE}|{pole}"));
+            Console.WriteLine(pole);
         }
 
         public void SendName(string name)

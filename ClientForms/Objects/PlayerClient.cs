@@ -19,15 +19,12 @@ namespace Client
 
         public PlayerClient(string server,int port)
         {
-            if (Instance == null)
-            {
-                Instance = this;
-                tcpclient = new TcpClient(server, port);
+            Instance = this;
+            tcpclient = new TcpClient(server, port);
                 
-                stream = tcpclient.GetStream();
-                _task = Task.Run(() => Listener());
-                Output.WriteLine("client connected");
-            }
+            stream = tcpclient.GetStream();
+            _task = Task.Run(() => Listener());
+            Output.WriteLine("client connected");
         }
 
         public void Listener()
@@ -38,8 +35,6 @@ namespace Client
                 byte[] bytes = new byte[100];
                 stream.Read(bytes, 0, bytes.Length);
                 pm.Run(Packets.GetPacket(bytes));
-                Output.WriteLine(Packets.GetPacket(bytes));
-                
             }
         }
     }

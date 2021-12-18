@@ -8,15 +8,11 @@ namespace ClientForms
 {
     public class Output
     {
-        public static RichTextBox OutputWindow;
+        public static Label OutputWindow;
 
         public static void WriteLine(string text)
         {
-            OutputWindow.Text += "\n" + text;
-        }
-        public static void Write(string text)
-        {
-            OutputWindow.Text += text;
+            OutputWindow.Text = text;
         }
     }
 }
