@@ -44,7 +44,7 @@ namespace ClientForms
                 new PacketManager();
                 if (!(nameTextBox.Text == "" && nameTextBox.Text == " "))
                 {
-                    new PlayerClient("127.0.0.1", 8888, nameTextBox.Text);
+                    new PlayerClient(nameTextBox.Text, Int32.Parse(port.Text), "IDK");
                     nameTextBox.Hide();
                 }
                 else Output.WriteLine("Nezadane jméno");
