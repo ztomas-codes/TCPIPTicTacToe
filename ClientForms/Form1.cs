@@ -8,11 +8,13 @@ namespace ClientForms
 
         public static Form1 Instance;
         public static List<MetroButton> buttons = new List<MetroButton>();
+        public static Label scoreLabel;
 
         public Form1()
         {
             InitializeComponent();
             Output.OutputWindow = Log;
+            scoreLabel = score;
 
             Instance = this;
 
@@ -37,22 +39,24 @@ namespace ClientForms
 
         private void button1_Click(object sender, EventArgs e)
         {
-            metroButton10.Hide();
-            //only added your code to build app app for the first time
-            try
+            if (nameTextBox.Text.Trim() == "" || nameTextBox.Text.Trim() == " ") Output.WriteLine("Nezadane jméno");
+            else
             {
-                new PacketManager();
-                if (!(nameTextBox.Text == "" && nameTextBox.Text == " "))
+                metroButton10.Hide();
+                //only added your code to build app app for the first time
+                try
                 {
-                    new PlayerClient(nameTextBox.Text, Int32.Parse(port.Text), "IDK");
+                    new PacketManager();
+                    new PlayerClient(ip.Text, Int32.Parse(port.Text), nameTextBox.Text);
+                    PacketManager.Instance.SendName(PlayerClient.Instance.Name);
                     nameTextBox.Hide();
+                    label1.Text = $"Name: {PlayerClient.Instance.Name}";
                 }
-                else Output.WriteLine("Nezadane jméno");
-            }
-            catch
-            {
-                Output.WriteLine("Server nebyl nalezen");
-                metroButton10.Show();
+                catch
+                {
+                    Output.WriteLine("Server nebyl nalezen");
+                    metroButton10.Show();
+                }
             }
         }
 

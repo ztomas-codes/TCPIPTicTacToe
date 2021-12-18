@@ -21,6 +21,7 @@ namespace Client
         const string WRONGMOVE = "WRGM";
         const string STARTGAME = "STRG";
         const string BOARD = "BOARD";
+        const string SCORE = "SCORE";
 
         const string NAME = "NAME";
 
@@ -40,17 +41,14 @@ namespace Client
             string[] packetList = packet.Split("|");
             switch (packetList[0])
             {
-                case WIN:
-                    Win(packet);
-                    break;
                 case TURN:
                     Turn(packet);
                     break;
+                case SCORE:
+                    Score(packet);
+                    break;
                 case BOARD:
                     Board(packet);
-                    break;
-                case LOSE:
-                    Lose(packet);
                     break;
                 case STARTGAME:
                     StartGame(packet);
@@ -69,14 +67,12 @@ namespace Client
 
 
         //Listeners
-        private void Win(string packet)
+        private void Score(string packet)
         {
-            Output.WriteLine("Vyhral jsi");
-        }
+            List<string> split = packet.Split('|').ToList();
+            split.RemoveAt(0);
 
-        private void Lose(string packet)
-        {
-            Output.WriteLine("Prohral jsi");
+            Form1.scoreLabel.Text = $"You: {split[0]} Enemy: {split[1]}";
         }
 
         private void WrongMove(string packet)
@@ -109,6 +105,19 @@ namespace Client
             foreach(var button in Form1.buttons)
             {
                 button.Text = $"{split[i].Remove(1)}";
+                switch (split[i])
+                {
+                    case "X":
+                        button.ForeColor = MetroFramework.MetroColors.Red;
+                        break;
+                    case "O":
+                        button.ForeColor = MetroFramework.MetroColors.Blue;
+                        break;
+                    default:
+                        button.ForeColor = MetroFramework.MetroColors.Black;
+                        break;
+                }
+                button.UseCustomForeColor = true;
                 i++;
             }
         }
