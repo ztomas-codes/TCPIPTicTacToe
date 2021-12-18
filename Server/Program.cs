@@ -16,6 +16,7 @@ namespace Server
         public static List<TcpClient> Client { get; private set; }
         public static NetworkStream _streamPlayer1 { get; set; }
         public static NetworkStream _streamPlayer2 { get; set; }
+        static List<string> Players = new List<string>();
         private static Task _Task { get; set; }
 
         static void Main(string[] args)
@@ -42,6 +43,8 @@ namespace Server
                     {
                         _streamPlayer2 = client.GetStream();
                     }
+                   
+
                     _Task = Task.Run(async ()
                         =>
                     {
@@ -59,18 +62,35 @@ namespace Server
                         
                     });
                 }
+                //Task.Run(() => ListenPl1());
 
                 if (Client.Count == 2)
                 {
-                    //TODO: Sort Name Packet
-                    Player player1 = new Player(Client[0].Client.RemoteEndPoint.ToString(), 0, Client[0].Client.RemoteEndPoint.ToString(), 8888);
-                    Player player2 = new Player(Client[1].Client.RemoteEndPoint.ToString(), 0, Client[1].Client.RemoteEndPoint.ToString(), 8888);
-                    GameManager gameManager = new GameManager(player1, player2, _streamPlayer1 , _streamPlayer2);
-                    
-                    Client.Clear();
-                    gameManager.StartGame();
+                    //var name = new byte[1024];
+
+                    //_streamPlayer2.Read(name , 0 , name.Length);
+                    //Players.Add(PacketManager.GetPacket(name));
+                    //if (Players.Count == 2)
+                    //{
+                    //    //TODO: Sort Name Packet
+                        Player player1 = new Player(Client[0].Client.RemoteEndPoint.ToString(), 0, Client[0].Client.RemoteEndPoint.ToString(), 8888);
+                        Player player2 = new Player(Client[1].Client.RemoteEndPoint.ToString(), 0, Client[1].Client.RemoteEndPoint.ToString(), 8888);
+                        GameManager gameManager = new GameManager(player1, player2, _streamPlayer1, _streamPlayer2);
+
+                        Client.Clear();
+                        gameManager.StartGame();
+                    //}
                 }
             }
+
         }
+        private static Task ListenPl1()
+        {
+            var name = new byte[1024];
+            _streamPlayer1.Read(name , 0 , name.Length);
+            Players.Add(PacketManager.GetPacket(name));
+            return Task.CompletedTask;
+        }
+        
     }
 }

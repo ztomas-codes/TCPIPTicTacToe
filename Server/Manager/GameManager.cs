@@ -220,6 +220,7 @@ namespace Server.Manager
                         System.Console.WriteLine(move);
                     }
                 }
+                
             
         }
         private void InsertIntoBoard(int move, char charToInsert)
@@ -233,6 +234,7 @@ namespace Server.Manager
                     boardPacket = PacketManager.CreatePacket(BuildBoard());
                     _player1.NetworkStream.Write(boardPacket, 0, boardPacket.Length);
                     _player2.NetworkStream.Write(boardPacket , 0 , boardPacket.Length);
+                    Win();
                     
                     break;
                 case 2:
@@ -240,48 +242,56 @@ namespace Server.Manager
                     boardPacket = PacketManager.CreatePacket(BuildBoard());
                     _player1.NetworkStream.Write(boardPacket, 0, boardPacket.Length);
                     _player2.NetworkStream.Write(boardPacket, 0, boardPacket.Length);
+                    Win();
                     break;
                 case 3:
                     board[0, 2] = charToInsert;
                     boardPacket = PacketManager.CreatePacket(BuildBoard());
                     _player1.NetworkStream.Write(boardPacket, 0, boardPacket.Length);
                     _player2.NetworkStream.Write(boardPacket, 0, boardPacket.Length);
+                    Win();
                     break;
                 case 4:
                     board[1, 0] = charToInsert;
                     boardPacket = PacketManager.CreatePacket(BuildBoard());
                     _player1.NetworkStream.Write(boardPacket, 0, boardPacket.Length);
                     _player2.NetworkStream.Write(boardPacket, 0, boardPacket.Length);
+                    Win();
                     break;
                 case 5:
                     board[1, 1] = charToInsert;
                     boardPacket = PacketManager.CreatePacket(BuildBoard());
                     _player1.NetworkStream.Write(boardPacket, 0, boardPacket.Length);
                     _player2.NetworkStream.Write(boardPacket, 0, boardPacket.Length);
+                    Win();
                     break;
                 case 6:
                     board[1, 2] = charToInsert;
                     boardPacket = PacketManager.CreatePacket(BuildBoard());
                     _player1.NetworkStream.Write(boardPacket, 0, boardPacket.Length);
                     _player2.NetworkStream.Write(boardPacket, 0, boardPacket.Length);
+                    Win();
                     break;
                 case 7:
                     board[2, 0] = charToInsert;
                     boardPacket = PacketManager.CreatePacket(BuildBoard());
                     _player1.NetworkStream.Write(boardPacket, 0, boardPacket.Length);
                     _player2.NetworkStream.Write(boardPacket, 0, boardPacket.Length);
+                    Win();
                     break;
                 case 8:
                     board[2, 1] = charToInsert;
                     boardPacket = PacketManager.CreatePacket(BuildBoard());
                     _player1.NetworkStream.Write(boardPacket, 0, boardPacket.Length);
                     _player2.NetworkStream.Write(boardPacket, 0, boardPacket.Length);
+                    Win();
                     break;
                 case 9:
                     board[2, 2] = charToInsert;
                     boardPacket = PacketManager.CreatePacket(BuildBoard());
                     _player1.NetworkStream.Write(boardPacket, 0, boardPacket.Length);
                     _player2.NetworkStream.Write(boardPacket, 0, boardPacket.Length);
+                    Win();
                     break;
                 default:
                     _player1.NetworkStream.Write(packet, 0, packet.Length);
