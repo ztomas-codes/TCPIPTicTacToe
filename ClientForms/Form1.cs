@@ -1,4 +1,5 @@
 using Client;
+using MetroFramework.Controls;
 
 namespace ClientForms
 {
@@ -6,6 +7,7 @@ namespace ClientForms
     {
 
         public static Form1 Instance;
+        public static List<MetroButton> buttons = new List<MetroButton>();
 
         public Form1()
         {
@@ -22,6 +24,7 @@ namespace ClientForms
                     i--;
                     button.Text = $"{i}";
                     button.Click += Button_Click;
+                    buttons.Add(button);
                 }
             }
         }
