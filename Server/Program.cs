@@ -50,9 +50,14 @@ namespace Server
                             var paket = Encoding.Default.GetBytes("Waiting for players");
                             await Task.Delay(10000);
                             
-                                Console.WriteLine("sent packet");
-                                _streamPlayer1.Write(paket, 0, paket.Length);
+                            Console.WriteLine("sent packet");
+                            _streamPlayer1.Write(paket, 0, paket.Length);
                         }
+                        if(Client.Count == 2)
+                        {
+                            _Task.Dispose();
+                        }
+                        
                     });
                 }
 
@@ -62,7 +67,7 @@ namespace Server
                     Player player1 = new Player(Client[0].Client.RemoteEndPoint.ToString(), 0, Client[0].Client.RemoteEndPoint.ToString(), 8888);
                     Player player2 = new Player(Client[1].Client.RemoteEndPoint.ToString(), 0, Client[1].Client.RemoteEndPoint.ToString(), 8888);
                     GameManager gameManager = new GameManager(player1, player2, _streamPlayer1 , _streamPlayer2);
-                    _Task.Dispose();
+                    
                     Client.Clear();
                     gameManager.StartGame();
                 }
