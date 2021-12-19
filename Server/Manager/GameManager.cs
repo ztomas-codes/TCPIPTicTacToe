@@ -46,7 +46,7 @@ namespace Server.Manager
             if (Running) return;
              Running = true;
              ResetBoard();
-             byte[] packet = PacketManager.CreatePacket($"{PacketManager.STARTGAME}|game started {_player1.Name} vs {_player2.Name}");
+             byte[] packet = PacketManager.CreatePacket($"{PacketManager.STARTGAME}|game started {_player1.Name} vs {_player2.Name} ");
             _player1.Char = 'O';
             _player2.Char = 'X';
             _player1.NetworkStream.Write(packet, 0, packet.Length);
@@ -80,7 +80,7 @@ namespace Server.Manager
                     _player1.NetworkStream.Read(bytes1, 0, bytes1.Length);
                     if (!CheckIfBothConnected())
                     {
-                        var packet = PacketManager.CreatePacket($"{PacketManager.DISCONNECT}|{_player1.Name} disconnected");
+                        var packet = PacketManager.CreatePacket($"{PacketManager.DISCONNECT}|{_player1.Name} disconnected ");
                         _player1.NetworkStream.Write(packet, 0, packet.Length);
                         _player1.NetworkStream.Dispose();
                         _player2.NetworkStream.Write(packet, 0, packet.Length);
@@ -102,7 +102,7 @@ namespace Server.Manager
                 _player2.NetworkStream.Read(bytes2, 0, bytes2.Length);
                 if (!CheckIfBothConnected())
                 {
-                    var packet = PacketManager.CreatePacket($"{PacketManager.DISCONNECT}|{_player1.Name} disconnected");
+                    var packet = PacketManager.CreatePacket($"{PacketManager.DISCONNECT}|{_player1.Name} disconnected ");
 
                     _player2.NetworkStream.Write(packet, 0, packet.Length);
                     _player2.NetworkStream.Dispose();
@@ -242,7 +242,7 @@ namespace Server.Manager
         }
         private void InsertIntoBoard(int move, char charToInsert)
         {
-            byte[] packet = PacketManager.CreatePacket($"{PacketManager.WRONGMOVE}|Wrong move");
+            byte[] packet = PacketManager.CreatePacket($"{PacketManager.WRONGMOVE}|Wrong move ");
             var boardPacket = PacketManager.CreatePacket(BuildBoard());
             switch (move)
             {
@@ -320,7 +320,7 @@ namespace Server.Manager
         }
         private bool CheckIfFree(int move)
         {
-            byte[] packet = PacketManager.CreatePacket($"{PacketManager.WRONGMOVE}|Wrong move place is already taken");
+            byte[] packet = PacketManager.CreatePacket($"{PacketManager.WRONGMOVE}|Wrong move place is already taken ");
             
             if (_player1.Turn == true)
             {
@@ -391,7 +391,7 @@ namespace Server.Manager
                         break;
                     default:
 
-                        byte[] errorMove = PacketManager.CreatePacket($"{PacketManager.WRONGMOVE}|Wrong move");
+                        byte[] errorMove = PacketManager.CreatePacket($"{PacketManager.WRONGMOVE}|Wrong move ");
                         _player1.NetworkStream.Write(errorMove, 0, errorMove.Length);
                         return false;
                 }
@@ -466,7 +466,7 @@ namespace Server.Manager
                             break;
                         default:
 
-                            byte[] errorMove = PacketManager.CreatePacket($"{PacketManager.WRONGMOVE}|Wrong move");
+                            byte[] errorMove = PacketManager.CreatePacket($"{PacketManager.WRONGMOVE}|Wrong move ");
                             _player2.NetworkStream.Write(errorMove, 0, errorMove.Length);
                             return false;
                     }
@@ -484,8 +484,8 @@ namespace Server.Manager
             {
                 lose = _player2.Score;
                 winnerS = _player1.Score;
-                var packet = PacketManager.CreatePacket($"{PacketManager.SCORE}|{winnerS}|{lose}");
-                var packetL = PacketManager.CreatePacket($"{PacketManager.SCORE}|{lose}|{winnerS}");
+                var packet = PacketManager.CreatePacket($"{PacketManager.SCORE}|{winnerS}|{lose} ");
+                var packetL = PacketManager.CreatePacket($"{PacketManager.SCORE}|{lose}|{winnerS} ");
                 _player1.NetworkStream.Write(packet, 0, packet.Length);
                 _player2.NetworkStream.Write(packetL, 0, packetL.Length);
             }
@@ -493,8 +493,8 @@ namespace Server.Manager
             {
                 lose = _player1.Score;
                 winnerS = _player2.Score;
-                var packet = PacketManager.CreatePacket($"{PacketManager.SCORE}|{winnerS}|{lose}");
-                var packetL = PacketManager.CreatePacket($"{PacketManager.SCORE}|{lose}|{winnerS}");
+                var packet = PacketManager.CreatePacket($"{PacketManager.SCORE}|{winnerS}|{lose} ");
+                var packetL = PacketManager.CreatePacket($"{PacketManager.SCORE}|{lose}|{winnerS} ");
                 _player1.NetworkStream.Write(packetL , 0 , packetL.Length);
                 _player2.NetworkStream.Write(packet, 0, packet.Length);
                 
@@ -502,7 +502,7 @@ namespace Server.Manager
             if(winner != null)
             {
                 Running = false;
-                await Task.Delay(500);
+                await Task.Delay(1000);
                 StartGame();
             }
         }
