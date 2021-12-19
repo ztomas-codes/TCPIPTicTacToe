@@ -502,7 +502,7 @@ namespace Server.Manager
             if(winner != null)
             {
                 Running = false;
-                await Task.Delay(5000);
+                await Task.Delay(500);
                 StartGame();
             }
         }
